@@ -1,0 +1,56 @@
+:root {
+  --primary: white;
+  --secondary: black;
+  --accent: darkcyan;
+  --background: #e4e9f7;
+  --background-nav: white;
+
+  --strong-radius: 20px;
+  --light-radius: 10px;
+}
+
+.dark-theme-variables {
+  --primary: black;
+  --secondary: white;
+  --accent: darkcyan;
+  --background: #18191a;
+  --background-nav: #242526;
+}
+
+html,
+body {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--background);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.toast-container .ngx-toastr.custom {
+  box-shadow: none;
+  border-radius: var(--light-radius);
+}
+
+.toast-container .ngx-toastr.custom.info {
+  background-color: var(--accent);
+}
+
+.toast-container .ngx-toastr.custom.error {
+  background-color: red;
+}
+
+.cdk-global-scrollblock {
+  position: fixed !important;
+  top: 0 !important;
+}
