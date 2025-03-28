@@ -1,0 +1,40 @@
+.cards-container {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cards-container .flex,
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95%;
+}
+
+.flex app-expenses-home,
+app-investments-home {
+  margin: 10px;
+  width: 100%;
+  max-width: 540px;
+}
+
+.center app-real-estate-home {
+  margin: 10px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+@media screen and (max-width: 885px) {
+  .flex {
+    flex-wrap: wrap;
+  }
+
+  .flex app-expenses-home,
+  app-investments-home {
+    max-width: none;
+  }
+}

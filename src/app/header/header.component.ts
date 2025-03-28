@@ -21,22 +21,26 @@ export class HeaderComponent {
   menuItems = [
     { path: '/', title: 'Home', icon: 'bx bxs-home' },
     { path: '/profile', title: 'Profile', icon: 'bx bxs-user' },
-    { path: '/expenses', title: 'Expenses', icon: 'bx bxs-wallet' },
+    { path: '/expenses', title: 'Expenses', icon: 'bx bxs-credit-card-alt' },
     {
       path: '/investments',
       title: 'Investments',
-      icon: 'bx bxs-bar-chart-alt-2',
+      icon: 'bx bxs-dollar-circle',
     },
     {
       path: '/investments/simulator',
       title: 'Investments Simulator',
-      icon: 'bx bxs-calculator',
+      icon: 'bx bxs-bar-chart-alt-2',
     },
-    { path: '/real-estate', title: 'Real Estate', icon: 'bx bxs-building' },
+    {
+      path: '/real-estate',
+      title: 'Real Estate',
+      icon: 'bx bxs-building-house',
+    },
     {
       path: '/real-estate/simulator',
       title: 'Real Estate Simulator',
-      icon: 'bx bxs-calculator',
+      icon: 'bx bx-spreadsheet',
     },
   ];
 
