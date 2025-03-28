@@ -8,11 +8,11 @@ import { InvestmentsComponent } from './investments/investments.component';
 import { InvestmentsSimulatorComponent } from './investments/investments-simulator/investments-simulator.component';
 import { RealEstateComponent } from './real-estate/real-estate.component';
 import { RealEstateSimulatorComponent } from './real-estate/real-estate-simulator/real-estate-simulator.component';
-import { MainComponent } from './main/main.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
   { path: 'connect', component: ConnectComponent, canActivate: [noUserGuard] },
-  { path: '', component: MainComponent, canActivate: [userGuard] },
+  { path: '', component: HomeComponent, canActivate: [userGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [userGuard] },
   { path: 'expenses', component: ExpensesComponent, canActivate: [userGuard] },
   {

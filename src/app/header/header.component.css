@@ -1,0 +1,136 @@
+:host {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+  width: 100%;
+  background-color: var(--background);
+  color: var(--accent);
+  position: relative;
+  min-height: 50px;
+}
+
+.project-title {
+  top: 20px;
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.project-title span {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.switch-container {
+  top: 8px;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  z-index: 1;
+}
+
+a,
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: var(--light-radius);
+  transition: 0.5s ease;
+  color: var(--accent) !important;
+}
+
+.back {
+  width: 50px;
+  height: 50px;
+  box-shadow: var(--box-shadow);
+}
+
+.menu {
+  width: 50px;
+  height: 50px;
+  box-shadow: var(--box-shadow);
+}
+
+a i {
+  font-size: 30px;
+}
+
+a:hover {
+  color: var(--primary) !important;
+  background-color: var(--accent) !important;
+}
+
+.switch-container button i {
+  font-size: 35px;
+}
+
+.switch-container button:hover {
+  color: var(--primary);
+  background-color: var(--accent);
+}
+
+.switch-container a .bx-arrow-back {
+  font-size: 35px;
+}
+
+.description {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 10px !important;
+  background-color: var(--background);
+}
+
+::ng-deep .mat-mdc-menu-item-text {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mdc-button {
+  min-width: 0 !important;
+}
+
+::ng-deep .mat-mdc-button:not(:disabled) {
+  color: var(--accent) !important;
+}
+
+::ng-deep .mat-mdc-button:not(:disabled):hover {
+  color: var(--primary) !important;
+}
+
+::ng-deep .mdc-button__label {
+  height: 35px !important;
+}
+
+::ng-deep .mat-mdc-button .mat-mdc-button-touch-target {
+  height: 50px !important;
+}
+
+@media screen and (max-width: 550px) {
+  .project-title {
+    top: 25px;
+  }
+
+  .project-title span {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .project-title {
+    top: 28px;
+  }
+
+  .project-title span {
+    font-size: 22px;
+  }
+}

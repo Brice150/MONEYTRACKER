@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-home',
   imports: [CommonModule],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.css',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
-export class MainComponent {}
+export class HomeComponent {}

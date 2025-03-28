@@ -1,1 +1,25 @@
-<p>header works!</p>
+<div class="project-title">
+  <span routerLink="/" title="Home">Money Tracker</span>
+</div>
+<div class="switch-container">
+  <button mat-button [matMenuTriggerFor]="menu" class="menu" title="Menu">
+    <i class="bx bx-menu"></i>
+  </button>
+  <mat-menu #menu="matMenu">
+    @for (item of menuItems; track $index) {
+    <a [routerLink]="item.path" [title]="item.title" mat-menu-item>
+      <i [class]="item.icon"></i>
+      <span class="description">{{ item.title }}</span>
+    </a>
+    }
+    <a (click)="logout()" title="Logout" mat-menu-item>
+      <i class="bx bxs-log-out"></i>
+      <span class="description">Logout</span>
+    </a>
+  </mat-menu>
+  @if (!isHomePage()) {
+  <a (click)="back()" title="Back" class="back">
+    <i class="bx bx-arrow-back"></i>
+  </a>
+  }
+</div>
