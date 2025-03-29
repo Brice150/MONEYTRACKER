@@ -1,5 +1,5 @@
 <div class="project-title">
-  <span routerLink="/" title="Home">Money Tracker</span>
+  <span>{{ getTitle() }}</span>
 </div>
 <div class="switch-container">
   <button mat-button [matMenuTriggerFor]="menu" class="menu" title="Menu">
@@ -7,7 +7,13 @@
   </button>
   <mat-menu #menu="matMenu">
     @for (item of menuItems; track $index) {
-    <a [routerLink]="item.path" [title]="item.title" mat-menu-item>
+    <a
+      [routerLink]="item.path"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [title]="item.title"
+      mat-menu-item
+    >
       <i [class]="item.icon"></i>
       <span class="description">{{ item.title }}</span>
     </a>

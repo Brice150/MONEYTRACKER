@@ -14,7 +14,6 @@
   top: 20px;
   position: absolute;
   z-index: 2;
-  cursor: pointer;
 }
 
 .project-title span {
@@ -44,6 +43,11 @@ button {
   border-radius: var(--light-radius);
   transition: 0.5s ease;
   color: var(--accent) !important;
+}
+
+a.active {
+  color: var(--primary) !important;
+  background-color: var(--accent) !important;
 }
 
 .back {

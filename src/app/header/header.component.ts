@@ -44,6 +44,17 @@ export class HeaderComponent {
     },
   ];
 
+  getTitle(): string {
+    const currentItem = this.menuItems.find(
+      (item) => item.path === this.router.url
+    );
+
+    if (!currentItem || !currentItem.title || currentItem.title === 'Home') {
+      return 'Money Tracker';
+    }
+    return currentItem.title;
+  }
+
   isHomePage(): boolean {
     return this.router.url === '/';
   }
