@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { RealEstates } from '../../core/interfaces/real-estates';
+import { RealEstate } from '../../core/interfaces/real-estate';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -11,19 +11,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './real-estate-home.component.css',
 })
 export class RealEstateHomeComponent {
-  @Input() realEstates: RealEstates = {} as RealEstates;
+  @Input() realEstate: RealEstate = {} as RealEstate;
   @Input() loading: boolean = false;
 
   getTotal(): number {
     let total: number = 0;
     if (
-      !this.realEstates.realEstates ||
-      this.realEstates.realEstates.length === 0
+      !this.realEstate.properties ||
+      this.realEstate.properties.length === 0
     ) {
       return 0;
     }
 
-    for (let realEstate of this.realEstates.realEstates) {
+    for (let realEstate of this.realEstate.properties) {
       total += realEstate.price;
     }
     return total;

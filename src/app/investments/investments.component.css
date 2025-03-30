@@ -8,7 +8,7 @@
 
 .cards-container {
   position: relative;
-  margin-top: 20px;
+  margin: 20px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,6 +190,36 @@ mat-spinner {
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.simulator {
+  margin: 10px 0;
+  cursor: pointer;
+  background-color: var(--background);
+  color: var(--accent);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: var(--light-radius);
+  transition: 0.5s ease;
+  width: 140px;
+  text-decoration: none;
+}
+
+.simulator:hover {
+  background-color: var(--accent);
+  color: var(--primary);
+}
+
+.simulator i {
+  font-size: 30px;
+}
+
+.simulator .text {
+  font-size: 20px;
+  font-weight: 500;
 }
 
 ::ng-deep .cards-container form .mat-mdc-form-field-icon-suffix {

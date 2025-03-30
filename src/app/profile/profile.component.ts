@@ -17,12 +17,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, filter, of, Subject, switchMap, takeUntil } from 'rxjs';
-import { ProfileService } from '../core/services/profile.service';
-import { UserService } from '../core/services/user.service';
-import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ExpensesService } from '../core/services/expenses.service';
 import { InvestmentsService } from '../core/services/investments.service';
-import { RealEstatesService } from '../core/services/real-estates.service';
+import { ProfileService } from '../core/services/profile.service';
+import { RealEstateService } from '../core/services/real-estate.service';
+import { UserService } from '../core/services/user.service';
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-profil',
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userService = inject(UserService);
   expensesService = inject(ExpensesService);
   investmentsService = inject(InvestmentsService);
-  realEstatesService = inject(RealEstatesService);
+  realEstateService = inject(RealEstateService);
   dialog = inject(MatDialog);
   router = inject(Router);
   hide: boolean = true;
@@ -139,7 +139,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           return this.expensesService.deleteUserExpenses();
         }),
         switchMap(() => this.investmentsService.deleteUserInvestments()),
-        switchMap(() => this.realEstatesService.deleteUserRealEstates()),
+        switchMap(() => this.realEstateService.deleteUserRealEstate()),
         switchMap(() =>
           this.profileService.deleteProfile().pipe(
             catchError(() => {

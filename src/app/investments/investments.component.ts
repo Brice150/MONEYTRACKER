@@ -13,6 +13,7 @@ import { InvestmentsService } from '../core/services/investments.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Investment } from '../core/interfaces/investment';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-investments',
@@ -23,6 +24,7 @@ import { Investment } from '../core/interfaces/investment';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    RouterModule,
   ],
   templateUrl: './investments.component.html',
   styleUrl: './investments.component.css',

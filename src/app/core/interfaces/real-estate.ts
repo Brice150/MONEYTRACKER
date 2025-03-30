@@ -1,7 +1,7 @@
-import { Color } from '../enums/color.enum';
+import { Property } from './property';
 
 export interface RealEstate {
-  title: string;
-  price: number;
-  color: Color;
+  id: string;
+  properties: Property[];
+  userId?: string;
 }

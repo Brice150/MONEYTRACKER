@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
+import { Expenses } from '../core/interfaces/expenses';
+import { Investments } from '../core/interfaces/investments';
+import { RealEstate } from '../core/interfaces/real-estate';
+import { ExpensesService } from '../core/services/expenses.service';
+import { InvestmentsService } from '../core/services/investments.service';
+import { RealEstateService } from '../core/services/real-estate.service';
 import { ExpensesHomeComponent } from './expenses-home/expenses-home.component';
 import { InvestmentsHomeComponent } from './investments-home/investments-home.component';
 import { RealEstateHomeComponent } from './real-estate-home/real-estate-home.component';
-import { Expenses } from '../core/interfaces/expenses';
-import { Investments } from '../core/interfaces/investments';
-import { RealEstates } from '../core/interfaces/real-estates';
-import { ExpensesService } from '../core/services/expenses.service';
-import { InvestmentsService } from '../core/services/investments.service';
-import { RealEstatesService } from '../core/services/real-estates.service';
-import { combineLatest, Subject, take, takeUntil } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +27,10 @@ import { ToastrService } from 'ngx-toastr';
 export class HomeComponent implements OnInit, OnDestroy {
   expenses: Expenses = {} as Expenses;
   investments: Investments = {} as Investments;
-  realEstates: RealEstates = {} as RealEstates;
+  realEstate: RealEstate = {} as RealEstate;
   expensesService = inject(ExpensesService);
   investmentsService = inject(InvestmentsService);
-  realEstatesService = inject(RealEstatesService);
+  realEstateService = inject(RealEstateService);
   toastr = inject(ToastrService);
   loading: boolean = true;
   destroyed$ = new Subject<void>();
@@ -41,11 +41,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     combineLatest([
       this.expensesService.getExpenses(),
       this.investmentsService.getInvestments(),
-      this.realEstatesService.getRealEstates(),
+      this.realEstateService.getRealEstate(),
     ])
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
-        next: ([expenses, investments, realEstates]) => {
+        next: ([expenses, investments, realEstate]) => {
           if (expenses[0]?.expenses?.length > 0) {
             this.expenses = expenses[0];
           } else {
@@ -56,10 +56,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else {
             this.investments.investments = [];
           }
-          if (realEstates[0]?.realEstates?.length > 0) {
-            this.realEstates = realEstates[0];
+          if (realEstate[0]?.properties?.length > 0) {
+            this.realEstate = realEstate[0];
           } else {
-            this.realEstates.realEstates = [];
+            this.realEstate.properties = [];
           }
           this.loading = false;
         },

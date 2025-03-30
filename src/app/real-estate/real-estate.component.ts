@@ -1,10 +1,160 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Subject, take, takeUntil } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Color } from '../core/enums/color.enum';
+import { RealEstate } from '../core/interfaces/real-estate';
+import { RealEstateService } from '../core/services/real-estate.service';
 
 @Component({
   selector: 'app-real-estate',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    RouterModule,
+  ],
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
 })
-export class RealEstateComponent {}
+export class RealEstateComponent implements OnInit {
+  realEstate: RealEstate = {} as RealEstate;
+  toastr = inject(ToastrService);
+  realEstateService = inject(RealEstateService);
+  loading: boolean = true;
+  destroyed$ = new Subject<void>();
+  updateNeeded: boolean = false;
+
+  ngOnInit(): void {
+    this.realEstateService
+      .getRealEstate()
+      .pipe(take(1), takeUntil(this.destroyed$))
+      .subscribe({
+        next: (realEstate: RealEstate[]) => {
+          if (realEstate[0]?.properties?.length > 0) {
+            this.realEstate = realEstate[0];
+          } else {
+            this.realEstate.properties = [];
+          }
+          this.loading = false;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  deleteProperty(index: number): void {
+    this.realEstate.properties.splice(index, 1);
+    this.saveUserRealEstates('deleted');
+  }
+
+  addProperty(): void {
+    this.realEstate.properties.push({
+      title: 'Property',
+      price: 100,
+      rent: 0,
+      surface: 40,
+      ownershipRatio: 100,
+    });
+    this.saveUserRealEstates('added');
+  }
+
+  updateProperties(): void {
+    this.saveUserRealEstates('updated');
+  }
+
+  saveUserRealEstates(toastrMessage: string): void {
+    this.loading = true;
+    if (!this.realEstate.id) {
+      this.realEstateService
+        .addRealEstate(this.realEstate)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.toastr.info('Property added', 'Real Estate', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom info',
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            if (
+              !error.message.includes('Missing or insufficient permissions.')
+            ) {
+              this.toastr.error(error.message, 'Real Estate', {
+                positionClass: 'toast-bottom-center',
+                toastClass: 'ngx-toastr custom error',
+              });
+            }
+          },
+        });
+    } else {
+      this.realEstateService
+        .updateRealEstate(this.realEstate)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.updateNeeded = false;
+            this.toastr.info('Properties ' + toastrMessage, 'Real Estate', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom info',
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            if (
+              !error.message.includes('Missing or insufficient permissions.')
+            ) {
+              this.toastr.error(error.message, 'Real Estate', {
+                positionClass: 'toast-bottom-center',
+                toastClass: 'ngx-toastr custom error',
+              });
+            }
+          },
+        });
+    }
+  }
+
+  toggleUpdateNeeded(): void {
+    this.updateNeeded = true;
+  }
+
+  getTotal(): number {
+    let total: number = 0;
+    if (
+      !this.realEstate.properties ||
+      this.realEstate.properties.length === 0
+    ) {
+      return 0;
+    }
+
+    for (let realEstate of this.realEstate.properties) {
+      total += realEstate.price;
+    }
+    return total;
+  }
+}
