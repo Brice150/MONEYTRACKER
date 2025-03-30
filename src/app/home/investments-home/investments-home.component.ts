@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Investments } from '../../core/interfaces/investments';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Chart } from 'chart.js';
+import { Investment } from '../../core/interfaces/investment';
 
 @Component({
   selector: 'app-investments-home',
@@ -10,9 +12,58 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './investments-home.component.html',
   styleUrl: './investments-home.component.css',
 })
-export class InvestmentsHomeComponent {
+export class InvestmentsHomeComponent implements OnChanges {
   @Input() investments: Investments = {} as Investments;
   @Input() loading: boolean = false;
+  doughnutGraph?: Chart<'doughnut', number[], string>;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes['loading'] &&
+      !changes['loading'].firstChange &&
+      changes['loading'].previousValue &&
+      !changes['loading'].currentValue
+    ) {
+      this.displayInvestmentsDoughnutGraph();
+    }
+  }
+
+  displayInvestmentsDoughnutGraph(): void {
+    const graph = document.getElementById(
+      'investmentsDoughnutGraph'
+    ) as HTMLCanvasElement | null;
+
+    if (graph) {
+      this.doughnutGraph = new Chart(graph, {
+        type: 'doughnut',
+        data: {
+          labels: this.investments.investments.map(
+            (investment: Investment) => investment.title
+          ),
+          datasets: [
+            {
+              label: 'Investments',
+              data: this.investments.investments.map(
+                (investment: Investment) => investment.totalAmount
+              ),
+              backgroundColor: this.investments.investments.map(
+                (investment: Investment) => investment.color
+              ),
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          color: '#006aff',
+        },
+      });
+    }
+  }
 
   getTotal(): number {
     let total: number = 0;
