@@ -2,5 +2,20 @@
   <div class="title">
     <span>Expenses</span>
   </div>
-  <div class="content"></div>
+  <div class="content">
+    <canvas id="expensesDoughnutGraph"></canvas>
+  </div>
+  @if (!loading) {
+  <div class="value-container">
+    <div class="subtitle">
+      <i class="bx bxs-credit-card-alt"></i>
+      <span>Total Expenses :</span>
+    </div>
+    <span class="number"
+      >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} €</span
+    >
+  </div>
+  } @else {
+  <mat-spinner></mat-spinner>
+  }
 </div>

@@ -51,9 +51,9 @@ export class InvestmentsService {
 
   updateInvestments(investments: Investments): Observable<void> {
     if (!investments.id) {
-      return from(Promise.reject('ID de courses manquant.'));
+      return from(Promise.reject('Investments ID missing.'));
     }
-    const investmentsDoc = doc(this.firestore, `Investments/${investments.id}`);
+    const investmentsDoc = doc(this.firestore, `investments/${investments.id}`);
     return from(updateDoc(investmentsDoc, { ...investments }));
   }
 

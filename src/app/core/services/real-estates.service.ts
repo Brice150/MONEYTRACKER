@@ -51,7 +51,7 @@ export class RealEstatesService {
 
   updateRealEstates(realEstates: RealEstates): Observable<void> {
     if (!realEstates.id) {
-      return from(Promise.reject('ID de courses manquant.'));
+      return from(Promise.reject('Real Estates ID missing'));
     }
     const realEstatesDoc = doc(
       this.firestore,

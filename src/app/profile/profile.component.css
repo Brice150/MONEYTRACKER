@@ -1,29 +1,30 @@
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 section {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-section .title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-section .title h1 {
-  color: var(--accent);
-  text-transform: uppercase;
+  margin-top: 20px;
+  width: 95%;
+  max-width: 1000px;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--strong-radius);
 }
 
 section .content {
+  padding: 30px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 20px;
-  width: 90%;
-  max-width: 600px;
+  width: 70%;
   gap: 20px;
 }
 
@@ -54,8 +55,8 @@ section .button-container {
 
 section .button-container a {
   cursor: pointer;
-  background-color: var(--background-nav);
-  color: var(--accent);
+  background-color: var(--background);
+  color: var(--secondary);
   padding: 10px;
   display: flex;
   align-items: center;
@@ -72,7 +73,7 @@ section .button-container .delete {
 }
 
 section .button-container a:hover {
-  background-color: var(--accent);
+  background-color: var(--secondary);
   color: var(--primary);
 }
 
@@ -121,7 +122,7 @@ mat-spinner {
 }
 
 ::ng-deep .mdc-text-field--filled {
-  background-color: var(--background-nav) !important;
+  background-color: var(--background) !important;
 }
 
 ::ng-deep
@@ -163,13 +164,13 @@ mat-spinner {
 ::ng-deep
   .mdc-text-field--filled:not(.mdc-text-field--disabled)
   .mdc-text-field__input {
-  color: var(--secondary) !important;
+  color: var(--primary) !important;
 }
 
 ::ng-deep
   .mdc-text-field--filled:not(.mdc-text-field--disabled)
   .mdc-line-ripple::before {
-  border-bottom-color: var(--secondary) !important;
+  border-bottom-color: var(--accent) !important;
 }
 
 ::ng-deep
@@ -179,7 +180,7 @@ mat-spinner {
 }
 
 ::ng-deep mat-form-field.mat-form-field-invalid {
-  --secondary: red;
+  --primary: red;
   --accent: red;
 }
 

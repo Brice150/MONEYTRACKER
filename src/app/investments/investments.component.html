@@ -1,1 +1,95 @@
-<p>investments works!</p>
+<div class="cards-container">
+  <div class="column">
+    <div class="value-container">
+      <div class="subtitle">
+        <i class="bx bxs-dollar-circle"></i>
+        <span>Total Investments :</span>
+      </div>
+      <span class="number"
+        >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} €</span
+      >
+    </div>
+    <form>
+      @for (investment of investments.investments; track $index; let index =
+      $index) {
+      <div class="row">
+        <mat-form-field>
+          <mat-label>TITLE</mat-label>
+          <input
+            matInput
+            [(ngModel)]="investment.title"
+            [name]="'title' + index"
+            type="text"
+            (ngModelChange)="toggleUpdateNeeded()"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>AMOUNT</mat-label>
+          <input
+            matInput
+            [(ngModel)]="investment.totalAmount"
+            [name]="'totalAmount' + index"
+            type="number"
+            (ngModelChange)="toggleUpdateNeeded()"
+            min="0"
+          />
+          <span matSuffix>€</span>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>INTEREST RATE</mat-label>
+          <input
+            matInput
+            [(ngModel)]="investment.interestRate"
+            [name]="'interestRate' + index"
+            type="number"
+            (ngModelChange)="toggleUpdateNeeded()"
+            min="0"
+          />
+          <span matSuffix>%</span>
+        </mat-form-field>
+        <mat-form-field class="color">
+          <mat-label [ngStyle]="{ color: investment.color }">COLOR</mat-label>
+          <mat-select
+            [ngStyle]="{ color: investment.color }"
+            [(ngModel)]="investment.color"
+            (ngModelChange)="toggleUpdateNeeded()"
+            [name]="'color' + index"
+          >
+            @for (key of colorKeys; track key) {
+            <mat-option [value]="Color[key]">{{ key }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <div class="delete-container">
+          <a
+            (click)="deleteInvestment(index)"
+            class="delete"
+            title="Delete Investment"
+          >
+            <i class="bx bx-x"></i>
+          </a>
+        </div>
+      </div>
+      }
+    </form>
+    <div class="button-container">
+      <a (click)="addInvestment()" class="add" title="Add Investment">
+        <i class="bx bx-plus"></i>
+      </a>
+      @if(updateNeeded) {
+      <a (click)="updateInvestments()" class="update" title="Update Investment">
+        <i class="bx bx-check"></i>
+      </a>
+      }
+    </div>
+    <div class="graph">
+      <canvas id="investmentsDoughnutGraph"></canvas>
+    </div>
+    <div class="graph width">
+      <canvas id="investmentsBarGraph"></canvas>
+    </div>
+  </div>
+</div>
+@if(loading) {
+<mat-spinner></mat-spinner>
+}

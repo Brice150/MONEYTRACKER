@@ -51,7 +51,7 @@ export class ExpensesService {
 
   updateExpenses(expenses: Expenses): Observable<void> {
     if (!expenses.id) {
-      return from(Promise.reject('ID de courses manquant.'));
+      return from(Promise.reject('Expenses ID missing'));
     }
     const expensesDoc = doc(this.firestore, `expenses/${expenses.id}`);
     return from(updateDoc(expensesDoc, { ...expenses }));

@@ -1,10 +1,372 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { Investments } from '../core/interfaces/investments';
+import { Chart } from 'chart.js';
+import { Color } from '../core/enums/color.enum';
+import { ToastrService } from 'ngx-toastr';
+import { InvestmentsService } from '../core/services/investments.service';
+import { Subject, take, takeUntil } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Investment } from '../core/interfaces/investment';
 
 @Component({
   selector: 'app-investments',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './investments.component.html',
   styleUrl: './investments.component.css',
 })
-export class InvestmentsComponent {}
+export class InvestmentsComponent implements OnInit, OnDestroy {
+  investments: Investments = {} as Investments;
+  doughnutGraph?: Chart<'doughnut', number[], string>;
+  barGraph?: Chart<'bar', number[], string>;
+  colorKeys: (keyof typeof Color)[] = Object.keys(
+    Color
+  ) as (keyof typeof Color)[];
+  Color = Color;
+  toastr = inject(ToastrService);
+  investmentsService = inject(InvestmentsService);
+  loading: boolean = true;
+  destroyed$ = new Subject<void>();
+  updateNeeded: boolean = false;
+
+  ngOnInit(): void {
+    this.investmentsService
+      .getInvestments()
+      .pipe(take(1), takeUntil(this.destroyed$))
+      .subscribe({
+        next: (investments: Investments[]) => {
+          if (investments[0]?.investments?.length > 0) {
+            this.investments = investments[0];
+          } else {
+            this.investments.investments = [];
+          }
+          this.loading = false;
+          this.displayInvestmentsDoughnutGraph();
+          this.displayInvestmentsBarGraph();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  displayInvestmentsDoughnutGraph(): void {
+    const graph = document.getElementById(
+      'investmentsDoughnutGraph'
+    ) as HTMLCanvasElement | null;
+
+    if (graph) {
+      this.doughnutGraph = new Chart(graph, {
+        type: 'doughnut',
+        data: {
+          labels: this.investments.investments.map(
+            (investment: Investment) => investment.title
+          ),
+          datasets: [
+            {
+              label: 'Investments',
+              data: this.investments.investments.map(
+                (investment: Investment) => investment.totalAmount
+              ),
+              backgroundColor: this.investments.investments.map(
+                (investment: Investment) => investment.color
+              ),
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 40,
+                font: {
+                  size: 16,
+                  weight: 800,
+                },
+                color: 'white',
+              },
+            },
+          },
+          color: '#006aff',
+        },
+      });
+    }
+  }
+
+  displayInvestmentsBarGraph(): void {
+    const yearlyData = this.calculateYearlyTotals();
+    const labels = yearlyData.map((data) => `${data.year}`);
+    const datasets = this.investments.investments.map((investment, index) => {
+      return {
+        label: investment.title,
+        data: yearlyData.map((data) => data.totals[index]),
+        backgroundColor: investment.color,
+      };
+    });
+
+    const graph = document.getElementById(
+      'investmentsBarGraph'
+    ) as HTMLCanvasElement | null;
+
+    if (graph) {
+      this.barGraph = new Chart(graph, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets,
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                font: {
+                  size: 16,
+                  weight: 800,
+                },
+                color: 'white',
+              },
+            },
+          },
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Years',
+                font: {
+                  size: 18,
+                  weight: 800,
+                },
+                color: '#006aff',
+              },
+              ticks: {
+                color: 'white',
+              },
+              grid: {
+                color: 'transparent',
+              },
+              border: {
+                color: 'white',
+              },
+            },
+            y: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Total Amount (€)',
+                font: {
+                  size: 18,
+                  weight: 800,
+                },
+                color: '#006aff',
+              },
+              ticks: {
+                color: 'white',
+              },
+              grid: {
+                color: 'white',
+              },
+              border: {
+                color: 'white',
+              },
+            },
+          },
+        },
+      });
+    }
+  }
+
+  updateInvestmentsDoughnutGraph(): void {
+    if (this.doughnutGraph) {
+      this.doughnutGraph.data.labels = this.investments.investments.map(
+        (investment: Investment) => investment.title
+      );
+      this.doughnutGraph.data.datasets[0].data =
+        this.investments.investments.map(
+          (investment: Investment) => investment.totalAmount
+        );
+      this.doughnutGraph.data.datasets[0].backgroundColor =
+        this.investments.investments.map(
+          (investment: Investment) => investment.color
+        );
+      this.doughnutGraph.update();
+    }
+  }
+
+  updateInvestmentsBarGraph(): void {
+    if (this.barGraph) {
+      const yearlyData = this.calculateYearlyTotals();
+      const labels = yearlyData.map((data) => `${data.year}`);
+      const datasets = this.investments.investments.map((investment, index) => {
+        return {
+          label: investment.title,
+          data: yearlyData.map((data) => data.totals[index]),
+          backgroundColor: investment.color,
+        };
+      });
+
+      this.barGraph.data.labels = labels;
+      this.barGraph.data.datasets = datasets;
+      this.barGraph.update();
+    }
+  }
+
+  calculateYearlyTotals(): { year: number; totals: number[] }[] {
+    const years = 40;
+    const results: { year: number; totals: number[] }[] = [];
+
+    for (let year = 1; year <= years; year++) {
+      const yearlyTotals = this.investments.investments.map(
+        (investment, index) => {
+          const previousTotal = results[year - 2]?.totals || [];
+          const previousAmount = previousTotal[index] || investment.totalAmount;
+          const newAmount =
+            previousAmount + (previousAmount * investment.interestRate) / 100;
+          return newAmount;
+        }
+      );
+      results.push({ year, totals: yearlyTotals });
+    }
+
+    return results;
+  }
+
+  toggleUpdateNeeded(): void {
+    this.updateNeeded = true;
+  }
+
+  saveUserInvestments(toastrMessage: string): void {
+    this.loading = true;
+    if (!this.investments.id) {
+      this.investmentsService
+        .addInvestments(this.investments)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.updateInvestmentsDoughnutGraph();
+            this.updateInvestmentsBarGraph();
+            this.toastr.info('Investment added', 'Investments', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom info',
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            if (
+              !error.message.includes('Missing or insufficient permissions.')
+            ) {
+              this.toastr.error(error.message, 'Investments', {
+                positionClass: 'toast-bottom-center',
+                toastClass: 'ngx-toastr custom error',
+              });
+            }
+          },
+        });
+    } else {
+      this.investmentsService
+        .updateInvestments(this.investments)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.updateInvestmentsDoughnutGraph();
+            this.updateInvestmentsBarGraph();
+            this.updateNeeded = false;
+            this.toastr.info('Investment ' + toastrMessage, 'Investments', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom info',
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            this.loading = false;
+            if (
+              !error.message.includes('Missing or insufficient permissions.')
+            ) {
+              this.toastr.error(error.message, 'Investments', {
+                positionClass: 'toast-bottom-center',
+                toastClass: 'ngx-toastr custom error',
+              });
+            }
+          },
+        });
+    }
+  }
+
+  deleteInvestment(index: number): void {
+    this.investments.investments.splice(index, 1);
+    this.saveUserInvestments('deleted');
+  }
+
+  addInvestment(): void {
+    const usedColors: Color[] = this.investments.investments.map(
+      (investment) => investment.color
+    );
+    const unusedColors: Color[] = Object.values(Color).filter(
+      (color) => !usedColors.includes(color)
+    );
+
+    let newColor: Color = Color.BLUE;
+
+    if (unusedColors.length !== 0) {
+      newColor = unusedColors[0];
+    } else {
+      newColor = usedColors[Math.floor(Math.random() * usedColors.length)];
+    }
+
+    this.investments.investments.push({
+      title: 'Investment',
+      totalAmount: 100,
+      interestRate: 2,
+      color: newColor,
+    });
+    this.saveUserInvestments('added');
+  }
+
+  updateInvestments(): void {
+    this.saveUserInvestments('updated');
+  }
+
+  getTotal(): number {
+    let total: number = 0;
+    if (
+      !this.investments.investments ||
+      this.investments.investments.length === 0
+    ) {
+      return 0;
+    }
+
+    for (let investment of this.investments.investments) {
+      total += investment.totalAmount;
+    }
+    return total;
+  }
+}

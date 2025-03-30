@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.loading = false;
-            this.toastr.info('Profil modifié', 'Profil', {
+            this.toastr.info('Profile updated', 'Profile', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
             });
@@ -105,15 +105,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.loading = false;
             if (error.message.includes('auth/requires-recent-login')) {
               this.toastr.info(
-                'Veuillez vous déconnecter et reconnecter pour modifier le profil',
-                'Profil',
+                'Please logout and login again to perform this action',
+                'Profile',
                 {
                   positionClass: 'toast-bottom-center',
                   toastClass: 'ngx-toastr custom error',
                 }
               );
             } else {
-              this.toastr.info(error.message, 'Profil', {
+              this.toastr.info(error.message, 'Profile', {
                 positionClass: 'toast-bottom-center',
                 toastClass: 'ngx-toastr custom error',
               });
@@ -127,7 +127,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: 'supprimer votre profil',
+      data: 'delete your profile',
     });
 
     dialogRef
@@ -159,8 +159,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.loading = false;
-          this.router.navigate(['/']);
-          this.toastr.info('Profil supprimé', 'Profil', {
+          this.router.navigate(['/connect']);
+          this.toastr.info('Profile deleted', 'Profile', {
             positionClass: 'toast-bottom-center',
             toastClass: 'ngx-toastr custom info',
           });
@@ -169,15 +169,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.loading = false;
           if (error.message.includes('auth/requires-recent-login')) {
             this.toastr.info(
-              'Veuillez vous déconnecter et reconnecter pour effectuer cette action',
-              'Profil',
+              'Please logout and login again to perform this action',
+              'Profile',
               {
                 positionClass: 'toast-bottom-center',
                 toastClass: 'ngx-toastr custom error',
               }
             );
           } else {
-            this.toastr.info(error.message, 'Profil', {
+            this.toastr.info(error.message, 'Profile', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom error',
             });
