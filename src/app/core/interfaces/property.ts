@@ -1,9 +1,10 @@
+import { PropertyType } from '../enums/property-type.enum';
+
 export interface Property {
-  title: string;
+  type: PropertyType;
+  city: string;
+  surface: number;
   price: number;
   rent: number;
-  surface: number;
-  address?: string;
   ownershipRatio: number;
-  picture?: string;
 }

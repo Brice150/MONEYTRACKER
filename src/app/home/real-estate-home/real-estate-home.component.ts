@@ -23,8 +23,23 @@ export class RealEstateHomeComponent {
       return 0;
     }
 
-    for (let realEstate of this.realEstate.properties) {
-      total += realEstate.price;
+    for (let property of this.realEstate.properties) {
+      total += property.price * (property.ownershipRatio / 100);
+    }
+    return total;
+  }
+
+  getTotalRent(): number {
+    let total: number = 0;
+    if (
+      !this.realEstate.properties ||
+      this.realEstate.properties.length === 0
+    ) {
+      return 0;
+    }
+
+    for (let property of this.realEstate.properties) {
+      total += property.rent * (property.ownershipRatio / 100);
     }
     return total;
   }

@@ -1,4 +1,4 @@
-<div class="card" routerLink="/investments" title="Investments">
+<section routerLink="/investments" title="Investments">
   <div class="title">
     <span>Investments</span>
   </div>
@@ -9,7 +9,7 @@
   <div class="value-container">
     <div class="subtitle">
       <i class="bx bxs-dollar-circle"></i>
-      <span>Total Investments :</span>
+      <span>Total :</span>
     </div>
     <span class="number"
       >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} €</span
@@ -18,4 +18,4 @@
   } @else {
   <mat-spinner></mat-spinner>
   }
-</div>
+</section>

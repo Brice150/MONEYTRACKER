@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-.cards-container {
+section {
   position: relative;
   margin: 20px 0;
   display: flex;
@@ -40,7 +40,7 @@
   margin-bottom: 20px;
 }
 
-.cards-container form {
+section form {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -53,20 +53,20 @@
   overflow-y: auto;
 }
 
-.cards-container form .row {
+section form .row {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.cards-container .delete-container {
+section .delete-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.cards-container form .delete {
+section form .delete {
   width: 50px;
   height: 50px;
   color: red;
@@ -79,23 +79,23 @@
   align-items: center;
 }
 
-.cards-container form .delete i {
+section form .delete i {
   font-size: 50px;
 }
 
-.cards-container form .delete:hover {
+section form .delete:hover {
   color: var(--primary);
   background-color: red;
 }
 
-.cards-container .button-container {
+section .button-container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
 
-.cards-container .add {
+section .add {
   text-decoration: none;
   cursor: pointer;
   transition: 0.5s ease;
@@ -108,16 +108,16 @@
   margin: 10px;
 }
 
-.cards-container .add i {
+section .add i {
   font-size: 50px;
 }
 
-.cards-container .add:hover {
+section .add:hover {
   color: var(--primary);
   background-color: var(--accent);
 }
 
-.cards-container .update {
+section .update {
   text-decoration: none;
   cursor: pointer;
   transition: 0.5s ease;
@@ -130,37 +130,38 @@
   margin: 10px;
 }
 
-.cards-container .update i {
+section .update i {
   font-size: 50px;
 }
 
-.cards-container .update:hover {
+section .update:hover {
   color: var(--primary);
   background-color: var(--secondary);
 }
 
-.cards-container form input {
+section form input {
   color: var(--primary);
 }
 
-.cards-container form mat-label {
+section form mat-label {
   color: var(--accent);
 }
 
-.cards-container .value-container {
+section .value-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
   max-width: 400px;
+  gap: 10px;
   box-shadow: var(--box-shadow);
   border-radius: var(--strong-radius);
-  padding: 7px;
+  padding: 7px 0;
   margin-bottom: 10px;
 }
 
-.cards-container .value-container .subtitle {
+section .value-container .subtitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -169,14 +170,14 @@
   color: var(--primary);
 }
 
-.cards-container .value-container .number {
+section .value-container .number {
   font-size: 20px;
   font-weight: 500;
   color: var(--secondary);
   margin-right: 5px;
 }
 
-.cards-container .value-container i {
+section .value-container i {
   font-size: 40px;
   margin-right: 10px;
 }
@@ -188,7 +189,7 @@ mat-spinner {
   transform: translate(-50%, -50%);
 }
 
-::ng-deep .cards-container form .mat-mdc-form-field-icon-suffix {
+::ng-deep section form .mat-mdc-form-field-icon-suffix {
   color: var(--primary);
 }
 
@@ -212,7 +213,7 @@ mat-spinner {
 }
 
 @media screen and (max-width: 740px) {
-  .cards-container form {
+  section form {
     max-height: none;
     overflow-y: hidden;
   }
@@ -221,11 +222,11 @@ mat-spinner {
     height: 400px;
   }
 
-  .cards-container .delete-container {
+  section .delete-container {
     width: 210px;
   }
 
-  .cards-container form .row {
+  section form .row {
     margin: 10px 0;
   }
 }

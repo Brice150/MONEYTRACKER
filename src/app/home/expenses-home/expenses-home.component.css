@@ -1,4 +1,4 @@
-.card {
+section {
   position: relative;
   display: flex;
   align-items: center;
@@ -14,29 +14,29 @@
   transition: 0.5s ease;
 }
 
-.card:hover {
+section:hover {
   background-color: var(--accent);
 }
 
-.card .title {
+section .title {
   position: absolute;
   transition: 0.5s ease;
   top: 10px;
   color: var(--secondary);
 }
 
-.card:hover .title {
+section:hover .title {
   color: var(--primary);
 }
 
-.card .title span {
+section .title span {
   text-align: center;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: 1px;
 }
 
-.card .content {
+section .content {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,21 +44,22 @@
   height: 280px;
 }
 
-.card .value-container {
+section .value-container {
   position: absolute;
   bottom: 0;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
   max-width: 400px;
+  gap: 10px;
   box-shadow: var(--box-shadow);
   border-radius: var(--strong-radius);
-  padding: 7px;
+  padding: 7px 0;
 }
 
-.card .value-container .subtitle {
+section .value-container .subtitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,7 +68,7 @@
   color: var(--primary);
 }
 
-.card .value-container .number {
+section .value-container .number {
   font-size: 20px;
   font-weight: 500;
   color: var(--secondary);
@@ -75,11 +76,11 @@
   transition: 0.5s ease;
 }
 
-.card:hover .value-container .number {
+section:hover .value-container .number {
   color: var(--primary);
 }
 
-.card .value-container i {
+section .value-container i {
   font-size: 40px;
   margin-right: 10px;
 }
@@ -92,7 +93,7 @@ mat-spinner {
 }
 
 @media screen and (max-width: 885px) {
-  .card {
+  section {
     max-width: none;
   }
 }

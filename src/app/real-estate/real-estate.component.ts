@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,8 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, take, takeUntil } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Color } from '../core/enums/color.enum';
+import { PropertyType } from '../core/enums/property-type.enum';
 import { RealEstate } from '../core/interfaces/real-estate';
 import { RealEstateService } from '../core/services/real-estate.service';
 
@@ -34,6 +34,7 @@ export class RealEstateComponent implements OnInit {
   loading: boolean = true;
   destroyed$ = new Subject<void>();
   updateNeeded: boolean = false;
+  PropertyType: string[] = Object.values(PropertyType);
 
   ngOnInit(): void {
     this.realEstateService
@@ -72,8 +73,9 @@ export class RealEstateComponent implements OnInit {
 
   addProperty(): void {
     this.realEstate.properties.push({
-      title: 'Property',
-      price: 100,
+      type: PropertyType.HOUSE,
+      city: 'Paris',
+      price: 10000,
       rent: 0,
       surface: 40,
       ownershipRatio: 100,
@@ -152,8 +154,23 @@ export class RealEstateComponent implements OnInit {
       return 0;
     }
 
-    for (let realEstate of this.realEstate.properties) {
-      total += realEstate.price;
+    for (let property of this.realEstate.properties) {
+      total += property.price * (property.ownershipRatio / 100);
+    }
+    return total;
+  }
+
+  getTotalRent(): number {
+    let total: number = 0;
+    if (
+      !this.realEstate.properties ||
+      this.realEstate.properties.length === 0
+    ) {
+      return 0;
+    }
+
+    for (let property of this.realEstate.properties) {
+      total += property.rent * (property.ownershipRatio / 100);
     }
     return total;
   }

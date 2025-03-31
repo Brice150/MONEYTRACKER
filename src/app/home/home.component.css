@@ -1,4 +1,4 @@
-.cards-container {
+section {
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.cards-container .flex,
+section .flex,
 .center {
   display: flex;
   align-items: center;

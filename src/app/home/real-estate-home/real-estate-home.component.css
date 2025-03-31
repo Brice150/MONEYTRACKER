@@ -1,4 +1,4 @@
-.card {
+section {
   position: relative;
   display: flex;
   align-items: center;
@@ -14,36 +14,39 @@
   transition: 0.5s ease;
 }
 
-.card:hover {
+section:hover {
   background-color: var(--accent);
 }
 
-.card .title {
+section .title {
   position: absolute;
   transition: 0.5s ease;
   top: 10px;
   color: var(--secondary);
 }
 
-.card:hover .title {
+section:hover .title {
   color: var(--primary);
 }
 
-.card .title span {
+section .title span {
   text-align: center;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: 1px;
 }
 
-.card .content {
+section .content {
+  margin-top: 30px;
+  margin-bottom: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
 }
 
-.card .value-container {
+section .value-container {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -51,13 +54,21 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+}
+
+section .value-container .element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
   max-width: 400px;
   box-shadow: var(--box-shadow);
   border-radius: var(--strong-radius);
-  padding: 7px;
+  padding: 7px 0;
 }
 
-.card .value-container .subtitle {
+section .value-container .subtitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,7 +77,7 @@
   color: var(--primary);
 }
 
-.card .value-container .number {
+section .value-container .number {
   font-size: 20px;
   font-weight: 500;
   color: var(--secondary);
@@ -74,11 +85,11 @@
   transition: 0.5s ease;
 }
 
-.card:hover .value-container .number {
+section:hover .value-container .number {
   color: var(--primary);
 }
 
-.card .value-container i {
+section .value-container i {
   font-size: 40px;
   margin-right: 10px;
 }
@@ -88,4 +99,56 @@ mat-spinner {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+section .content .card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--strong-radius);
+}
+
+section .content .card .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+section .content .card .container.type {
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  transition: 0.5s ease;
+}
+
+section:hover .content .card .container.type {
+  color: var(--primary);
+}
+
+section .content .card .container {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+section .content .card .container span {
+  text-align: center;
+  width: 160px;
+}
+
+section .content .card .container i {
+  font-size: 30px;
+}
+
+@media screen and (max-width: 894px) {
+  section .content {
+    margin-bottom: 100px;
+  }
 }
