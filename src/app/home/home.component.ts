@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
 
   ngOnInit(): void {
+    this.expenses.expenses = [];
+    this.investments.investments = [];
+    this.realEstate.properties = [];
     this.loading = true;
 
     combineLatest([
@@ -48,18 +51,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         next: ([expenses, investments, realEstate]) => {
           if (expenses[0]?.expenses?.length > 0) {
             this.expenses = expenses[0];
-          } else {
-            this.expenses.expenses = [];
           }
           if (investments[0]?.investments?.length > 0) {
             this.investments = investments[0];
-          } else {
-            this.investments.investments = [];
           }
           if (realEstate[0]?.properties?.length > 0) {
             this.realEstate = realEstate[0];
-          } else {
-            this.realEstate.properties = [];
           }
           this.loading = false;
         },

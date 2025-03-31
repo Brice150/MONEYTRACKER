@@ -20,17 +20,20 @@
             [name]="'title' + index"
             type="text"
             (ngModelChange)="toggleUpdateNeeded()"
+            required
           />
         </mat-form-field>
         <mat-form-field>
           <mat-label>AMOUNT</mat-label>
           <input
             matInput
-            [(ngModel)]="expense.totalAmount"
-            [name]="'totalAmount' + index"
+            [(ngModel)]="expense.amount"
+            [name]="'amount' + index"
             type="number"
             (ngModelChange)="toggleUpdateNeeded()"
             min="0"
+            max="1000000000"
+            required
           />
           <span matSuffix>€</span>
         </mat-form-field>
@@ -69,7 +72,7 @@
       </a>
       }
     </div>
-    <div class="graph">
+    <div class="graph" [ngClass]="{ visible: expenses.expenses.length > 0 }">
       <canvas id="expensesDoughnutGraph"></canvas>
     </div>
   </div>

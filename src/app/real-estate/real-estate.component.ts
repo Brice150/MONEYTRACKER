@@ -84,7 +84,35 @@ export class RealEstateComponent implements OnInit {
   }
 
   updateProperties(): void {
-    this.saveUserRealEstates('updated');
+    if (
+      !this.realEstate.properties.some(
+        (property) =>
+          property.surface < 0 ||
+          property.price < 0 ||
+          property.rent < 0 ||
+          property.ownershipRatio < 0 ||
+          property.ownershipRatio > 100
+      ) &&
+      this.realEstate.properties.every(
+        (property) =>
+          property.city &&
+          property.surface !== undefined &&
+          property.surface !== null &&
+          property.price !== undefined &&
+          property.price !== null &&
+          property.ownershipRatio !== undefined &&
+          property.ownershipRatio !== null &&
+          property.rent !== undefined &&
+          property.rent !== null
+      )
+    ) {
+      this.saveUserRealEstates('updated');
+    } else {
+      this.toastr.info('Invalid property', 'Real Estate', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+    }
   }
 
   saveUserRealEstates(toastrMessage: string): void {

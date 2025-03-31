@@ -41,15 +41,14 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   updateNeeded: boolean = false;
 
   ngOnInit(): void {
+    this.expenses.expenses = [];
     this.expensesService
       .getExpenses()
       .pipe(take(1), takeUntil(this.destroyed$))
       .subscribe({
         next: (expenses: Expenses[]) => {
-          if (expenses[0]?.expenses?.length > 0) {
+          if (expenses[0]?.expenses?.length >= 0) {
             this.expenses = expenses[0];
-          } else {
-            this.expenses.expenses = [];
           }
           this.loading = false;
           this.displayExpensesGraph();
@@ -87,7 +86,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
             {
               label: 'Expenses',
               data: this.expenses.expenses.map(
-                (expense: Expense) => expense.totalAmount
+                (expense: Expense) => expense.amount
               ),
               backgroundColor: this.expenses.expenses.map(
                 (expense: Expense) => expense.color
@@ -122,7 +121,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
         (expense: Expense) => expense.title
       );
       this.doughnutGraph.data.datasets[0].data = this.expenses.expenses.map(
-        (expense: Expense) => expense.totalAmount
+        (expense: Expense) => expense.amount
       );
       this.doughnutGraph.data.datasets[0].backgroundColor =
         this.expenses.expenses.map((expense: Expense) => expense.color);
@@ -213,14 +212,29 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
     this.expenses.expenses.push({
       title: 'Expense',
-      totalAmount: 100,
+      amount: 100,
       color: newColor,
     });
     this.saveUserExpenses('added');
   }
 
   updateExpenses(): void {
-    this.saveUserExpenses('updated');
+    if (
+      !this.expenses.expenses.some((expense) => expense.amount < 0) &&
+      this.expenses.expenses.every(
+        (expense) =>
+          expense.amount !== undefined &&
+          expense.amount !== null &&
+          expense.title
+      )
+    ) {
+      this.saveUserExpenses('updated');
+    } else {
+      this.toastr.info('Invalid expense', 'Expenses', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+    }
   }
 
   getTotal(): number {
@@ -230,7 +244,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
 
     for (let expense of this.expenses.expenses) {
-      total += expense.totalAmount;
+      total += expense.amount;
     }
     return total;
   }

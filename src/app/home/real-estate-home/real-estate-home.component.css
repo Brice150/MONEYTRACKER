@@ -143,6 +143,12 @@ section .content .card .container span {
   width: 160px;
 }
 
+section .content .card .container span.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 section .content .card .container i {
   font-size: 30px;
 }

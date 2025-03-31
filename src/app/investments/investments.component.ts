@@ -44,15 +44,14 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
   updateNeeded: boolean = false;
 
   ngOnInit(): void {
+    this.investments.investments = [];
     this.investmentsService
       .getInvestments()
       .pipe(take(1), takeUntil(this.destroyed$))
       .subscribe({
         next: (investments: Investments[]) => {
-          if (investments[0]?.investments?.length > 0) {
+          if (investments[0]?.investments?.length >= 0) {
             this.investments = investments[0];
-          } else {
-            this.investments.investments = [];
           }
           this.loading = false;
           this.displayInvestmentsDoughnutGraph();
@@ -354,7 +353,29 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
   }
 
   updateInvestments(): void {
-    this.saveUserInvestments('updated');
+    if (
+      !this.investments.investments.some(
+        (investment) =>
+          investment.totalAmount < 0 ||
+          investment.interestRate < 0 ||
+          investment.interestRate > 100
+      ) &&
+      this.investments.investments.every(
+        (investment) =>
+          investment.title &&
+          investment.totalAmount !== undefined &&
+          investment.totalAmount !== null &&
+          investment.interestRate !== undefined &&
+          investment.interestRate !== null
+      )
+    ) {
+      this.saveUserInvestments('updated');
+    } else {
+      this.toastr.info('Invalid investment', 'Investments', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+    }
   }
 
   getTotal(): number {

@@ -44,7 +44,7 @@ export class ExpensesHomeComponent implements OnChanges {
             {
               label: 'Expenses',
               data: this.expenses.expenses.map(
-                (expense: Expense) => expense.totalAmount
+                (expense: Expense) => expense.amount
               ),
               backgroundColor: this.expenses.expenses.map(
                 (expense: Expense) => expense.color
@@ -72,7 +72,7 @@ export class ExpensesHomeComponent implements OnChanges {
     }
 
     for (let expense of this.expenses.expenses) {
-      total += expense.totalAmount;
+      total += expense.amount;
     }
     return total;
   }
