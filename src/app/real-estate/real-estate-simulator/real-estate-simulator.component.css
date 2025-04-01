@@ -21,19 +21,6 @@ section {
   border-radius: var(--strong-radius);
 }
 
-section .title {
-  position: absolute;
-  top: 10px;
-}
-
-section .title span {
-  text-align: center;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--secondary);
-}
-
 section .results {
   display: flex;
   justify-content: space-evenly;

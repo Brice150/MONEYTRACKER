@@ -1,1 +1,49 @@
-<p>investments-simulator works!</p>
+<section>
+  <form>
+    <mat-form-field>
+      <mat-label>INITIAL AMOUNT</mat-label>
+      <input
+        matInput
+        [(ngModel)]="investmentsSimulator.totalAmount"
+        name="totalAmount"
+        type="number"
+        (ngModelChange)="update()"
+        min="0"
+        max="1000000000"
+        required
+      />
+      <span matSuffix>€</span>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>AMOUNT PER MONTH</mat-label>
+      <input
+        matInput
+        [(ngModel)]="investmentsSimulator.amountPerMonth"
+        name="amountPerMonth"
+        type="number"
+        (ngModelChange)="update()"
+        min="0"
+        max="1000000000"
+        required
+      />
+      <span matSuffix>€</span>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>PERCENTAGE</mat-label>
+      <input
+        matInput
+        [(ngModel)]="investmentsSimulator.percentage"
+        name="percentage"
+        type="number"
+        (ngModelChange)="update()"
+        min="0"
+        max="100"
+        required
+      />
+      <span matSuffix>%</span>
+    </mat-form-field>
+  </form>
+  <div class="graph">
+    <canvas id="barGraph"></canvas>
+  </div>
+</section>

@@ -30,7 +30,9 @@ section {
 }
 
 .graph {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
 }
 
 .graph.visible {
@@ -42,6 +44,9 @@ section {
   justify-content: center;
   flex-direction: column;
   margin-bottom: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease-in-out;
 }
 
 .graph.width {

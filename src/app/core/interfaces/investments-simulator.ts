@@ -1,4 +1,4 @@
-export interface StockExchangeSimulator {
+export interface InvestmentsSimulator {
   totalAmount: number;
   amountPerMonth: number;
   percentage: number;
