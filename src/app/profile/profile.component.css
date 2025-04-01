@@ -7,13 +7,16 @@
 }
 
 section {
+  position: relative;
+  margin: 20px 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  margin-top: 20px;
   width: 95%;
-  max-width: 1000px;
+  max-width: 1200px;
+  background-color: var(--background);
+  color: var(--accent);
   box-shadow: var(--box-shadow);
   border-radius: var(--strong-radius);
 }
