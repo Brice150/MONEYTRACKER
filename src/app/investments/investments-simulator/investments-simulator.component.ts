@@ -69,6 +69,28 @@ export class InvestmentsSimulatorComponent implements OnInit {
                 color: 'white',
               },
             },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem: any) => {
+                  let dataset = tooltipItem.chart.data.datasets;
+                  let dataIndex = tooltipItem.dataIndex;
+                  let totalColumn = dataset.reduce(
+                    (sum: number, ds: any) => sum + (ds.data[dataIndex] || 0),
+                    0
+                  );
+
+                  let currentValue = Math.round(tooltipItem.raw).toLocaleString(
+                    'fr-FR'
+                  );
+                  let percentage = (
+                    (tooltipItem.raw / totalColumn) *
+                    100
+                  ).toFixed(0);
+
+                  return `${currentValue} (${percentage}%)`;
+                },
+              },
+            },
           },
           scales: {
             x: {

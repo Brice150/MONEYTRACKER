@@ -7,8 +7,7 @@
       </div>
       <span class="number"
         >{{
-          realEstateSimulator.results.totalCost
-            | currency : "EUR" : "" : "1.0-0"
+          realEstateSimulator.results.totalCost | number : "1.0-0" : "fr-FR"
         }}
         €</span
       >
@@ -20,8 +19,7 @@
       </div>
       <span class="number"
         >{{
-          realEstateSimulator.results.totalRents
-            | currency : "EUR" : "" : "1.0-0"
+          realEstateSimulator.results.totalRents | number : "1.0-0" : "fr-FR"
         }}
         € / M</span
       >
@@ -33,8 +31,7 @@
       </div>
       <span class="number"
         >{{
-          realEstateSimulator.results.totalCharges
-            | currency : "EUR" : "" : "1.0-0"
+          realEstateSimulator.results.totalCharges | number : "1.0-0" : "fr-FR"
         }}
         € / M</span
       >
@@ -68,7 +65,7 @@
           color: realEstateSimulator.results.cashFlow >= 0 ? '#45d606' : 'red'
         }"
         >{{
-          realEstateSimulator.results.cashFlow | currency : "EUR" : "" : "1.0-0"
+          realEstateSimulator.results.cashFlow | number : "1.0-0" : "fr-FR"
         }}
         € / M</span
       >

@@ -11,9 +11,7 @@
       <i class="bx bxs-dollar-circle"></i>
       <span>Total :</span>
     </div>
-    <span class="number"
-      >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} €</span
-    >
+    <span class="number">{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span>
   </div>
   } @else {
   <mat-spinner></mat-spinner>

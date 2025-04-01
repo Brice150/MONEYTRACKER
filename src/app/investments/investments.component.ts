@@ -120,8 +120,14 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = dataset.data[tooltipItem.dataIndex];
-                  let percentage = ((currentValue / total) * 100).toFixed(0);
+                  let currentValue = Math.round(
+                    dataset.data[tooltipItem.dataIndex]
+                  ).toLocaleString('fr-FR');
+                  let percentage = (
+                    (dataset.data[tooltipItem.dataIndex] / total) *
+                    100
+                  ).toFixed(0);
+
                   return `${currentValue} (${percentage}%)`;
                 },
               },
@@ -178,10 +184,15 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
                     (sum: number, ds: any) => sum + (ds.data[dataIndex] || 0),
                     0
                   );
-                  let currentValue = tooltipItem.raw;
-                  let percentage = ((currentValue / totalColumn) * 100).toFixed(
-                    0
+
+                  let currentValue = Math.round(tooltipItem.raw).toLocaleString(
+                    'fr-FR'
                   );
+                  let percentage = (
+                    (tooltipItem.raw / totalColumn) *
+                    100
+                  ).toFixed(0);
+
                   return `${currentValue} (${percentage}%)`;
                 },
               },

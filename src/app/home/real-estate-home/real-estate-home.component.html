@@ -38,7 +38,7 @@
           <span>Total :</span>
         </div>
         <span class="number"
-          >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} €</span
+          >{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span
         >
       </div>
       <div class="element">
@@ -47,8 +47,7 @@
           <span>Rent :</span>
         </div>
         <span class="number"
-          >{{ getTotalRent() | currency : "EUR" : "" : "1.0-0" }} € /
-          Month</span
+          >{{ getTotalRent() | number : "1.0-0" : "fr-FR" }} € / Month</span
         >
       </div>
     </div>

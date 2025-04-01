@@ -11,9 +11,9 @@
       <i class="bx bxs-credit-card-alt"></i>
       <span>Total :</span>
     </div>
-    <span class="number"
-      >{{ getTotal() | currency : "EUR" : "" : "1.0-0" }} € / Month</span
-    >
+    <span class="number">
+      {{ getTotal() | number : "1.0-0" : "fr-FR" }} € / Month
+    </span>
   </div>
   } @else {
   <mat-spinner></mat-spinner>
