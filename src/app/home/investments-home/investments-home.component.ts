@@ -58,6 +58,20 @@ export class InvestmentsHomeComponent implements OnChanges {
             legend: {
               display: false,
             },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem: any) => {
+                  let dataset = tooltipItem.dataset;
+                  let total = dataset.data.reduce(
+                    (acc: number, value: number) => acc + value,
+                    0
+                  );
+                  let currentValue = dataset.data[tooltipItem.dataIndex];
+                  let percentage = ((currentValue / total) * 100).toFixed(0);
+                  return `${currentValue} (${percentage}%)`;
+                },
+              },
+            },
           },
           color: '#006aff',
         },

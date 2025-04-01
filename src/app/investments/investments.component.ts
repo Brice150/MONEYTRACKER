@@ -112,6 +112,20 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
                 color: 'white',
               },
             },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem: any) => {
+                  let dataset = tooltipItem.dataset;
+                  let total = dataset.data.reduce(
+                    (acc: number, value: number) => acc + value,
+                    0
+                  );
+                  let currentValue = dataset.data[tooltipItem.dataIndex];
+                  let percentage = ((currentValue / total) * 100).toFixed(0);
+                  return `${currentValue} (${percentage}%)`;
+                },
+              },
+            },
           },
           color: '#006aff',
         },
@@ -153,6 +167,23 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
                   weight: 800,
                 },
                 color: 'white',
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem: any) => {
+                  let dataset = tooltipItem.chart.data.datasets;
+                  let dataIndex = tooltipItem.dataIndex;
+                  let totalColumn = dataset.reduce(
+                    (sum: number, ds: any) => sum + (ds.data[dataIndex] || 0),
+                    0
+                  );
+                  let currentValue = tooltipItem.raw;
+                  let percentage = ((currentValue / totalColumn) * 100).toFixed(
+                    0
+                  );
+                  return `${currentValue} (${percentage}%)`;
+                },
               },
             },
           },
