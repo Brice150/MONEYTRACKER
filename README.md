@@ -38,7 +38,7 @@ Backend/Database : Firebase
 
 - View your current investments in a donut graph
 - Add, modify or delete an investment
-- View your investments in function of time in a bar/line graph
+- View your investments in function of time in a bar graph
 
 ### Investments/simulator
 
@@ -46,8 +46,8 @@ Backend/Database : Firebase
 
 ### Real-estate
 
-- View your current real estate investments in cards
-- Add, modify or delete a real estate investment
+- View your current real estate properties in cards
+- Add, modify or delete a property
 
 ### Real-estate/simulator
 
