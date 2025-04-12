@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Investments } from '../../core/interfaces/investments';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,8 +13,8 @@ import { Investment } from '../../core/interfaces/investment';
   styleUrl: './investments-home.component.css',
 })
 export class InvestmentsHomeComponent implements OnChanges {
-  @Input() investments: Investments = {} as Investments;
-  @Input() loading: boolean = false;
+  readonly investments = input<Investments>({} as Investments);
+  readonly loading = input<boolean>(false);
   doughnutGraph?: Chart<'doughnut', number[], string>;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,16 +37,16 @@ export class InvestmentsHomeComponent implements OnChanges {
       this.doughnutGraph = new Chart(graph, {
         type: 'doughnut',
         data: {
-          labels: this.investments.investments.map(
+          labels: this.investments().investments.map(
             (investment: Investment) => investment.title
           ),
           datasets: [
             {
               label: 'Investments',
-              data: this.investments.investments.map(
+              data: this.investments().investments.map(
                 (investment: Investment) => investment.totalAmount
               ),
-              backgroundColor: this.investments.investments.map(
+              backgroundColor: this.investments().investments.map(
                 (investment: Investment) => investment.color
               ),
             },
@@ -87,14 +87,15 @@ export class InvestmentsHomeComponent implements OnChanges {
 
   getTotal(): number {
     let total: number = 0;
+    const investments = this.investments();
     if (
-      !this.investments.investments ||
-      this.investments.investments.length === 0
+      !investments.investments ||
+      investments.investments.length === 0
     ) {
       return 0;
     }
 
-    for (let investment of this.investments.investments) {
+    for (let investment of investments.investments) {
       total += investment.totalAmount;
     }
     return total;

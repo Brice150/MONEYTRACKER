@@ -3,7 +3,7 @@
     <span>Real Estate</span>
   </div>
   <div class="content">
-    @for (property of realEstate.properties; track $index; let index = $index) {
+    @for (property of realEstate().properties; track $index; let index = $index) {
     <div class="card">
       <div class="container type">
         <i class="bx bxs-building-house"></i>
@@ -30,7 +30,7 @@
         <span>{{ property.ownershipRatio }} %</span>
       </div>
     </div>
-    } @if (!loading) {
+    } @if (!loading()) {
     <div class="value-container">
       <div class="element">
         <div class="subtitle">

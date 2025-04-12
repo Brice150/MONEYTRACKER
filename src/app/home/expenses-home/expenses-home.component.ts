@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, input } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { Chart } from 'chart.js';
@@ -13,8 +13,8 @@ import { Expenses } from '../../core/interfaces/expenses';
   styleUrl: './expenses-home.component.css',
 })
 export class ExpensesHomeComponent implements OnChanges {
-  @Input() expenses: Expenses = {} as Expenses;
-  @Input() loading: boolean = false;
+  readonly expenses = input<Expenses>({} as Expenses);
+  readonly loading = input<boolean>(false);
   doughnutGraph?: Chart<'doughnut', number[], string>;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,16 +37,16 @@ export class ExpensesHomeComponent implements OnChanges {
       this.doughnutGraph = new Chart(graph, {
         type: 'doughnut',
         data: {
-          labels: this.expenses.expenses.map(
+          labels: this.expenses().expenses.map(
             (expense: Expense) => expense.title
           ),
           datasets: [
             {
               label: 'Expenses',
-              data: this.expenses.expenses.map(
+              data: this.expenses().expenses.map(
                 (expense: Expense) => expense.amount
               ),
-              backgroundColor: this.expenses.expenses.map(
+              backgroundColor: this.expenses().expenses.map(
                 (expense: Expense) => expense.color
               ),
             },
@@ -87,11 +87,12 @@ export class ExpensesHomeComponent implements OnChanges {
 
   getTotal(): number {
     let total: number = 0;
-    if (!this.expenses.expenses || this.expenses.expenses.length === 0) {
+    const expenses = this.expenses();
+    if (!expenses.expenses || expenses.expenses.length === 0) {
       return 0;
     }
 
-    for (let expense of this.expenses.expenses) {
+    for (let expense of expenses.expenses) {
       total += expense.amount;
     }
     return total;
