@@ -202,6 +202,10 @@ mat-spinner {
   transform: translate(-50%, -50%);
 }
 
+::ng-deep .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--accent) !important;
+}
+
 .simulator {
   margin: 10px 0;
   cursor: pointer;

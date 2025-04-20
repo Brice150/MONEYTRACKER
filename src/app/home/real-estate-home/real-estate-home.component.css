@@ -101,6 +101,10 @@ mat-spinner {
   transform: translate(-50%, -50%);
 }
 
+::ng-deep .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--accent) !important;
+}
+
 section .content .card {
   display: flex;
   justify-content: center;
