@@ -142,3 +142,14 @@ section form mat-label {
   mat-label {
   color: var(--secondary) !important;
 }
+
+::ng-deep
+  .mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-line-ripple::after {
+  border-bottom-color: var(--accent) !important;
+}
+
+::ng-deep mat-form-field.mat-form-field-invalid {
+  --secondary: red;
+  --accent: red;
+}
