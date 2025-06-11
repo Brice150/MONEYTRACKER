@@ -4,7 +4,6 @@
   flex-direction: column;
   margin: 0;
   width: 100%;
-  background-color: var(--background);
   color: var(--accent);
   position: relative;
   min-height: 50px;
@@ -42,6 +41,7 @@ button {
   text-decoration: none;
   border-radius: var(--light-radius);
   transition: 0.5s ease;
+  background-color: var(--background-card);
   color: var(--accent) !important;
 }
 
@@ -91,7 +91,7 @@ a:hover {
 
 ::ng-deep .mat-mdc-menu-content {
   padding: 10px !important;
-  background-color: var(--background);
+  background-color: var(--background-card);
 }
 
 ::ng-deep .mat-mdc-menu-item-text {
