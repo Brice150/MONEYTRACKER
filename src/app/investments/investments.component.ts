@@ -14,6 +14,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Investment } from '../core/interfaces/investment';
 import { RouterModule } from '@angular/router';
+import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-investments',
@@ -25,6 +26,7 @@ import { RouterModule } from '@angular/router';
     MatSelectModule,
     MatProgressSpinnerModule,
     RouterModule,
+    DisableScrollDirective,
   ],
   templateUrl: './investments.component.html',
   styleUrl: './investments.component.css',

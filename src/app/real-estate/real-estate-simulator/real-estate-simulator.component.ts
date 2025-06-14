@@ -5,10 +5,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RealEstateSimulator } from '../../core/interfaces/real-estate-simulator';
 import { ToastrService } from 'ngx-toastr';
+import { DisableScrollDirective } from '../../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-real-estate-simulator',
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    DisableScrollDirective,
+  ],
   templateUrl: './real-estate-simulator.component.html',
   styleUrl: './real-estate-simulator.component.css',
 })

@@ -26,6 +26,7 @@
         <mat-form-field>
           <mat-label>AMOUNT</mat-label>
           <input
+            appDisableScroll
             matInput
             [(ngModel)]="expense.amount"
             [name]="'amount' + index"

@@ -50,6 +50,7 @@
         <mat-form-field>
           <mat-label>SURFACE</mat-label>
           <input
+            appDisableScroll
             matInput
             [(ngModel)]="property.surface"
             [name]="'surface' + index"
@@ -64,6 +65,7 @@
         <mat-form-field>
           <mat-label>PRICE</mat-label>
           <input
+            appDisableScroll
             matInput
             [(ngModel)]="property.price"
             [name]="'price' + index"
@@ -78,6 +80,7 @@
         <mat-form-field>
           <mat-label>RENT</mat-label>
           <input
+            appDisableScroll
             matInput
             [(ngModel)]="property.rent"
             [name]="'rent' + index"
@@ -92,6 +95,7 @@
         <mat-form-field>
           <mat-label>OWNERSHIP</mat-label>
           <input
+            appDisableScroll
             matInput
             [(ngModel)]="property.ownershipRatio"
             [name]="'ownershipRatio' + index"

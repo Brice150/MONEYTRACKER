@@ -13,6 +13,7 @@ import { Color } from '../core/enums/color.enum';
 import { Expense } from '../core/interfaces/expense';
 import { Expenses } from '../core/interfaces/expenses';
 import { ExpensesService } from '../core/services/expenses.service';
+import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-expenses',
@@ -23,6 +24,7 @@ import { ExpensesService } from '../core/services/expenses.service';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    DisableScrollDirective,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css',

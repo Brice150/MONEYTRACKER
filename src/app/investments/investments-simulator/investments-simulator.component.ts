@@ -6,10 +6,17 @@ import { MatInputModule } from '@angular/material/input';
 import { Chart } from 'chart.js';
 import { InvestmentsSimulator } from '../../core/interfaces/investments-simulator';
 import { ToastrService } from 'ngx-toastr';
+import { DisableScrollDirective } from '../../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-investments-simulator',
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    DisableScrollDirective,
+  ],
   templateUrl: './investments-simulator.component.html',
   styleUrl: './investments-simulator.component.css',
 })

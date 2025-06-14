@@ -3,6 +3,7 @@
     <mat-form-field>
       <mat-label>INITIAL AMOUNT</mat-label>
       <input
+        appDisableScroll
         matInput
         [(ngModel)]="investmentsSimulator.totalAmount"
         name="totalAmount"
@@ -17,6 +18,7 @@
     <mat-form-field>
       <mat-label>AMOUNT PER MONTH</mat-label>
       <input
+        appDisableScroll
         matInput
         [(ngModel)]="investmentsSimulator.amountPerMonth"
         name="amountPerMonth"
@@ -31,6 +33,7 @@
     <mat-form-field>
       <mat-label>PERCENTAGE</mat-label>
       <input
+        appDisableScroll
         matInput
         [(ngModel)]="investmentsSimulator.percentage"
         name="percentage"

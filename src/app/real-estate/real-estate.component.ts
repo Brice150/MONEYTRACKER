@@ -12,6 +12,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { PropertyType } from '../core/enums/property-type.enum';
 import { RealEstate } from '../core/interfaces/real-estate';
 import { RealEstateService } from '../core/services/real-estate.service';
+import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-real-estate',
@@ -23,6 +24,7 @@ import { RealEstateService } from '../core/services/real-estate.service';
     MatSelectModule,
     MatProgressSpinnerModule,
     RouterModule,
+    DisableScrollDirective,
   ],
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
