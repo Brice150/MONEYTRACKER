@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +29,7 @@ import { DisableScrollDirective } from '../shared/directives/disable-scroll.dire
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
 })
-export class RealEstateComponent implements OnInit {
+export class RealEstateComponent implements OnInit, OnDestroy {
   realEstate: RealEstate = {} as RealEstate;
   toastr = inject(ToastrService);
   realEstateService = inject(RealEstateService);
