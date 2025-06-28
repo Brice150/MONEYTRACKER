@@ -130,7 +130,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: () => {
-          this.router.navigate(['/recipes/selection']);
+          this.router.navigate(['/']);
           this.toastr.info('Welcome', 'Money Tracker', {
             positionClass: 'toast-bottom-center',
             toastClass: 'ngx-toastr custom info',
