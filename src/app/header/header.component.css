@@ -10,16 +10,17 @@
 }
 
 .project-title {
-  top: 20px;
+  top: 15px;
   position: absolute;
   z-index: 2;
 }
 
-.project-title span {
+.project-title h1 {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .switch-container {
@@ -121,20 +122,20 @@ a:hover {
 
 @media screen and (max-width: 550px) {
   .project-title {
-    top: 25px;
+    top: 20px;
   }
 
-  .project-title span {
+  .project-title h1 {
     font-size: 25px;
   }
 }
 
 @media screen and (max-width: 450px) {
   .project-title {
-    top: 28px;
+    top: 24px;
   }
 
-  .project-title span {
+  .project-title h1 {
     font-size: 22px;
   }
 }
