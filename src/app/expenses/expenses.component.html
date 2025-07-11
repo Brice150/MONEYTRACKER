@@ -52,25 +52,36 @@
           </mat-select>
         </mat-form-field>
         <div class="delete-container">
-          <a
+          <button
+            type="button"
             (click)="deleteExpense(index)"
             class="delete"
             title="Delete Expense"
           >
             <i class="bx bx-x"></i>
-          </a>
+          </button>
         </div>
       </div>
       }
     </form>
     <div class="button-container">
-      <a (click)="addExpense()" class="add" title="Add Expense">
+      <button
+        type="button"
+        (click)="addExpense()"
+        class="add"
+        title="Add Expense"
+      >
         <i class="bx bx-plus"></i>
-      </a>
+      </button>
       @if(updateNeeded) {
-      <a (click)="updateExpenses()" class="update" title="Update Expense">
+      <button
+        type="button"
+        (click)="updateExpenses()"
+        class="update"
+        title="Update Expense"
+      >
         <i class="bx bx-check"></i>
-      </a>
+      </button>
       }
     </div>
     <div class="graph" [ngClass]="{ visible: expenses.expenses.length > 0 }">

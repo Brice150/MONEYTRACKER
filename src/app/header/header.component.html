@@ -7,7 +7,8 @@
   </button>
   <mat-menu #menu="matMenu">
     @for (item of menuItems; track $index) {
-    <a
+    <button
+      type="button"
       [routerLink]="item.path"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
@@ -16,16 +17,16 @@
     >
       <i [class]="item.icon"></i>
       <span class="description">{{ item.title }}</span>
-    </a>
+    </button>
     }
-    <a (click)="logout()" title="Logout" mat-menu-item>
+    <button type="button" (click)="logout()" title="Logout" mat-menu-item>
       <i class="bx bxs-log-out"></i>
       <span class="description">Logout</span>
-    </a>
+    </button>
   </mat-menu>
   @if (!isHomePage()) {
-  <a (click)="back()" title="Back" class="back">
+  <button type="button" (click)="back()" title="Back" class="back">
     <i class="bx bx-arrow-back"></i>
-  </a>
+  </button>
   }
 </div>

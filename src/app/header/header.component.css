@@ -33,7 +33,6 @@
   z-index: 1;
 }
 
-a,
 button {
   display: flex;
   justify-content: center;
@@ -44,9 +43,10 @@ button {
   transition: 0.5s ease;
   background-color: var(--background-card);
   color: var(--accent) !important;
+  border: none;
 }
 
-a.active {
+button.active {
   color: var(--primary) !important;
   background-color: var(--accent) !important;
 }
@@ -63,11 +63,11 @@ a.active {
   box-shadow: var(--box-shadow);
 }
 
-a i {
+button i {
   font-size: 30px;
 }
 
-a:hover {
+button:hover {
   color: var(--primary) !important;
   background-color: var(--accent) !important;
 }
@@ -81,7 +81,7 @@ a:hover {
   background-color: var(--accent);
 }
 
-.switch-container a .bx-arrow-back {
+.switch-container button .bx-arrow-back {
   font-size: 35px;
 }
 

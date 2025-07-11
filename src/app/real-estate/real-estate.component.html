@@ -108,35 +108,47 @@
           <span matSuffix>%</span>
         </mat-form-field>
         <div class="delete-container">
-          <a
+          <button
+            type="button"
             (click)="deleteProperty(index)"
             class="delete"
             title="Delete Property"
           >
             <i class="bx bx-x"></i>
-          </a>
+          </button>
         </div>
       </div>
       }
     </form>
     <div class="button-container">
-      <a (click)="addProperty()" class="add" title="Add Property">
+      <button
+        type="button"
+        (click)="addProperty()"
+        class="add"
+        title="Add Property"
+      >
         <i class="bx bx-plus"></i>
-      </a>
+      </button>
       @if(updateNeeded) {
-      <a (click)="updateProperties()" class="update" title="Update Properties">
+      <button
+        type="button"
+        (click)="updateProperties()"
+        class="update"
+        title="Update Properties"
+      >
         <i class="bx bx-check"></i>
-      </a>
+      </button>
       }
     </div>
-    <a
+    <button
+      type="button"
       class="simulator"
       routerLink="/real-estate/simulator"
       title="Real Estate Simulator"
     >
       <i class="bx bx-spreadsheet"></i>
       <span class="text">Simulator</span>
-    </a>
+    </button>
   </div>
 </section>
 @if(loading) {

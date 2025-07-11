@@ -68,25 +68,36 @@
           </mat-select>
         </mat-form-field>
         <div class="delete-container">
-          <a
+          <button
+            type="button"
             (click)="deleteInvestment(index)"
             class="delete"
             title="Delete Investment"
           >
             <i class="bx bx-x"></i>
-          </a>
+          </button>
         </div>
       </div>
       }
     </form>
     <div class="button-container">
-      <a (click)="addInvestment()" class="add" title="Add Investment">
+      <button
+        type="button"
+        (click)="addInvestment()"
+        class="add"
+        title="Add Investment"
+      >
         <i class="bx bx-plus"></i>
-      </a>
+      </button>
       @if(updateNeeded) {
-      <a (click)="updateInvestments()" class="update" title="Update Investment">
+      <button
+        type="button"
+        (click)="updateInvestments()"
+        class="update"
+        title="Update Investment"
+      >
         <i class="bx bx-check"></i>
-      </a>
+      </button>
       }
     </div>
     <div
@@ -101,14 +112,15 @@
     >
       <canvas id="investmentsBarGraph"></canvas>
     </div>
-    <a
+    <button
+      type="button"
       class="simulator"
       routerLink="/investments/simulator"
       title="Investments Simulator"
     >
       <i class="bx bxs-bar-chart-alt-2"></i>
       <span class="text">Simulator</span>
-    </a>
+    </button>
   </div>
 </section>
 @if(loading) {

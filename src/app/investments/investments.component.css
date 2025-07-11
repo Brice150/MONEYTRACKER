@@ -90,6 +90,7 @@ section form .delete {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
 }
 
 section form .delete i {
@@ -119,6 +120,8 @@ section .add {
   justify-content: center;
   align-items: center;
   margin: 10px;
+  border: none;
+  background-color: var(--background-card);
 }
 
 section .add i {
@@ -141,6 +144,8 @@ section .update {
   justify-content: center;
   align-items: center;
   margin: 10px;
+  border: none;
+  background-color: var(--background-card);
 }
 
 section .update i {
@@ -218,8 +223,8 @@ mat-spinner {
   gap: 10px;
   border-radius: var(--light-radius);
   transition: 0.5s ease;
-  width: 140px;
-  text-decoration: none;
+  width: 150px;
+  border: none;
 }
 
 .simulator:hover {
@@ -234,6 +239,7 @@ mat-spinner {
 .simulator .text {
   font-size: 20px;
   font-weight: 500;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 ::ng-deep section form .mat-mdc-form-field-icon-suffix {
