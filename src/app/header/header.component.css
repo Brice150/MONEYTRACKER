@@ -44,6 +44,7 @@ button {
   background-color: var(--background-card);
   color: var(--accent) !important;
   border: none;
+  margin: 5px 0;
 }
 
 button.active {
