@@ -49,6 +49,11 @@ export class HeaderComponent {
     if (!currentItem || !currentItem.title || currentItem.title === 'Home') {
       return 'Money Tracker';
     }
+
+    if (currentItem.title.includes('Simulator')) {
+      return 'Simulator';
+    }
+
     return currentItem.title;
   }
 

@@ -60,7 +60,10 @@
       <span matSuffix>€</span>
     </mat-form-field>
   </form>
-  @if (investmentsSimulator.goalAmount && investmentsSimulator.monthsToGoal) {
+  @if (investmentsSimulator.goalAmount && investmentsSimulator.monthsToGoal &&
+  investmentsSimulator.goalAmount <
+  investmentsSimulator.yearly.total[investmentsSimulator.yearly.total.length -
+  1]) {
   <div class="description">
     <span>
       You will have
@@ -80,6 +83,13 @@
             (investmentsSimulator.monthsToGoal > 1 ? " months" : " month")
       }}</span>
     </span>
+  </div>
+  } @else if (investmentsSimulator.goalAmount &&
+  investmentsSimulator.monthsToGoal && investmentsSimulator.goalAmount >
+  investmentsSimulator.yearly.total[investmentsSimulator.yearly.total.length -
+  1]) {
+  <div class="description">
+    <span>Set a lower goal to see when you can reach it</span>
   </div>
   } @else {
   <div class="description">
