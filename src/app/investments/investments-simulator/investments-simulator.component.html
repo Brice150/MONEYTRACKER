@@ -45,7 +45,47 @@
       />
       <span matSuffix>%</span>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>GOAL</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="investmentsSimulator.goalAmount"
+        name="goalAmount"
+        type="number"
+        (ngModelChange)="update(true)"
+        [min]="investmentsSimulator.totalAmount"
+        max="1000000000"
+      />
+      <span matSuffix>€</span>
+    </mat-form-field>
   </form>
+  @if (investmentsSimulator.goalAmount && investmentsSimulator.monthsToGoal) {
+  <div class="description">
+    <span>
+      You will have
+      <span
+        >{{
+          investmentsSimulator.goalAmount | number : "1.0-0" : "fr-FR"
+        }}
+        €</span
+      >
+      in
+      <span>{{
+        investmentsSimulator.monthsToGoal >= 12
+          ? (investmentsSimulator.monthsToGoal / 12
+              | number : "1.1-1" : "fr-FR") +
+            (investmentsSimulator.monthsToGoal >= 24 ? " years" : " year")
+          : investmentsSimulator.monthsToGoal +
+            (investmentsSimulator.monthsToGoal > 1 ? " months" : " month")
+      }}</span>
+    </span>
+  </div>
+  } @else {
+  <div class="description">
+    <span>Set a higher goal to see when you can reach it</span>
+  </div>
+  }
   <div class="graph">
     <canvas id="barGraph"></canvas>
   </div>

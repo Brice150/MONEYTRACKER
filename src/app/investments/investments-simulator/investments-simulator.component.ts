@@ -25,6 +25,8 @@ export class InvestmentsSimulatorComponent implements OnInit {
     totalAmount: 1000,
     amountPerMonth: 100,
     percentage: 8,
+    goalAmount: 10000,
+    monthsToGoal: undefined,
     yearly: {
       date: Array.from({ length: 41 }, (_, i) => i.toString()),
       invested: [1000],
@@ -37,6 +39,7 @@ export class InvestmentsSimulatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.calculateAmounts();
+    this.calculateGoal();
     this.displayGraph();
   }
 
@@ -175,9 +178,47 @@ export class InvestmentsSimulatorComponent implements OnInit {
     }
   }
 
-  update(): void {
+  calculateGoal(): void {
+    if (!this.investmentsSimulator.goalAmount) return;
+
+    const totals = this.investmentsSimulator.yearly.total;
+
+    for (let year = 0; year < totals.length; year++) {
+      if (totals[year] >= this.investmentsSimulator.goalAmount) {
+        if (year === 0) {
+          this.investmentsSimulator.monthsToGoal = 0;
+          return;
+        }
+
+        const prevTotal = totals[year - 1];
+        const currTotal = totals[year];
+
+        const diffNeeded = this.investmentsSimulator.goalAmount - prevTotal;
+        const diffYear = currTotal - prevTotal;
+        const fraction = diffNeeded / diffYear;
+
+        this.investmentsSimulator.monthsToGoal = Math.round(
+          (year - 1 + fraction) * 12
+        );
+
+        if (this.investmentsSimulator.monthsToGoal < 1) {
+          this.investmentsSimulator.monthsToGoal = 1;
+        }
+
+        return;
+      }
+    }
+  }
+
+  update(goalChanged = false): void {
+    if (goalChanged) {
+      this.calculateGoal();
+      return;
+    }
+
     if (this.isFormValid()) {
       this.calculateAmounts();
+      this.calculateGoal();
       this.updateGraph();
     } else {
       this.toastr.info('Invalid Simulator', 'Investments Simulator', {

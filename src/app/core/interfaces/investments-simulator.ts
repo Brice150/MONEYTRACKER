@@ -2,6 +2,8 @@ export interface InvestmentsSimulator {
   totalAmount: number;
   amountPerMonth: number;
   percentage: number;
+  goalAmount?: number;
+  monthsToGoal?: number;
   yearly: Yearly;
 }
 

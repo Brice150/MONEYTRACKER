@@ -51,6 +51,24 @@ section form mat-label {
   text-transform: uppercase;
 }
 
+.description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+
+.description span {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.description span span {
+  color: var(--secondary);
+}
+
 ::ng-deep section form .mat-mdc-form-field-icon-suffix {
   color: var(--primary);
 }
