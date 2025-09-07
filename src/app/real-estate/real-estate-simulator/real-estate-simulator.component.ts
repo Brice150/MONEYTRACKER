@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RealEstateSimulator } from '../../core/interfaces/real-estate-simulator';
 import { ToastrService } from 'ngx-toastr';
 import { DisableScrollDirective } from '../../shared/directives/disable-scroll.directive';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Subject, take, takeUntil } from 'rxjs';
+import { RealEstateSimulatorService } from '../../core/services/real-estate-simulator.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-real-estate-simulator',
@@ -15,68 +19,127 @@ import { DisableScrollDirective } from '../../shared/directives/disable-scroll.d
     MatFormFieldModule,
     MatInputModule,
     DisableScrollDirective,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './real-estate-simulator.component.html',
   styleUrl: './real-estate-simulator.component.css',
 })
-export class RealEstateSimulatorComponent implements OnInit {
+export class RealEstateSimulatorComponent implements OnInit, OnDestroy {
   toastr = inject(ToastrService);
-  realEstateSimulator: RealEstateSimulator = {
-    results: {
-      totalCost: 0,
-      totalRents: 0,
-      totalCharges: 0,
-      grossYield: 0,
-      netYield: 0,
-      cashFlow: 0,
-    },
-    purchase: {
-      price: 100000,
-      notaryFees: 0,
-    },
-    renovation: {
-      price: 0,
-      furnitureBudget: 0,
-    },
-    financing: {
-      downPayment: 10000,
-      loanRate: 3.8,
-      insuranceRate: 0.35,
-      duration: 20,
-      totalBorrowed: 0,
-      monthlyPayments: 0,
-    },
-    annualExpenses: {
-      propertyTax: 800,
-      pnoInsurance: 200,
-      coownershipCharges: 700,
-      otherCharges: 0,
-    },
-    rent: {
-      lotsNumber: 1,
-      rentPerLot: 710,
-    },
-  };
+  realEstateSimulator: RealEstateSimulator = {} as RealEstateSimulator;
+  realEstateSimulatorService = inject(RealEstateSimulatorService);
+  loading: boolean = true;
+  destroyed$ = new Subject<void>();
+  updateNeeded: boolean = false;
 
   ngOnInit(): void {
+    this.realEstateSimulatorService
+      .getRealEstateSimulator()
+      .pipe(take(1), takeUntil(this.destroyed$))
+      .subscribe({
+        next: (realEstateSimulator: RealEstateSimulator[]) => {
+          if (realEstateSimulator[0]) {
+            this.realEstateSimulator = realEstateSimulator[0];
+            this.loading = false;
+          } else {
+            this.initData();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  initData(): void {
+    const realEstateSimulator: RealEstateSimulator = {
+      results: {
+        totalCost: 0,
+        totalRents: 0,
+        totalCharges: 0,
+        grossYield: 0,
+        netYield: 0,
+        cashFlow: 0,
+      },
+      purchase: {
+        price: 100000,
+        notaryFees: 0,
+      },
+      renovation: {
+        price: 0,
+        furnitureBudget: 0,
+      },
+      financing: {
+        downPayment: 10000,
+        loanRate: 3.8,
+        insuranceRate: 0.35,
+        duration: 20,
+        totalBorrowed: 0,
+        monthlyPayments: 0,
+      },
+      annualExpenses: {
+        propertyTax: 800,
+        pnoInsurance: 200,
+        coownershipCharges: 700,
+        otherCharges: 0,
+      },
+      rent: {
+        lotsNumber: 1,
+        rentPerLot: 710,
+      },
+    } as RealEstateSimulator;
+
+    this.realEstateSimulator = realEstateSimulator;
     this.calculateAmounts();
+
+    this.realEstateSimulatorService
+      .addRealEstateSimulator(this.realEstateSimulator)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: () => {
+          this.loading = false;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   calculateAmounts(): void {
-    if (this.isFormValid()) {
-      this.calculateTotalCost();
-      this.calculateTotalRent();
-      this.calculateFinancing();
-      this.calculateTotalCharges();
-      this.calculateGrossYield();
-      this.calculateNetYield();
-      this.calculateCashFlow();
-    } else {
+    if (!this.isFormValid()) {
       this.toastr.info('Invalid Simulator', 'Real Estate Simulator', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',
       });
+      return;
     }
+
+    this.updateNeeded = true;
+
+    this.calculateTotalCost();
+    this.calculateTotalRent();
+    this.calculateFinancing();
+    this.calculateTotalCharges();
+    this.calculateGrossYield();
+    this.calculateNetYield();
+    this.calculateCashFlow();
   }
 
   isFormValid(): boolean {
@@ -152,6 +215,38 @@ export class RealEstateSimulatorComponent implements OnInit {
       isAnnualExpensesValid &&
       isRentValid
     );
+  }
+
+  updateSimulator(): void {
+    if (!this.isFormValid()) {
+      this.toastr.info('Invalid Simulator', 'Real Estate Simulator', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+      return;
+    }
+
+    this.realEstateSimulatorService
+      .updateRealEstateSimulator(this.realEstateSimulator)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: () => {
+          this.updateNeeded = false;
+          this.toastr.info('Simulator updated', 'Real Estate Simulator', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   calculateTotalCost(): void {

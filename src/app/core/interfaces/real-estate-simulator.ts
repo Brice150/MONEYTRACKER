@@ -1,10 +1,12 @@
 export interface RealEstateSimulator {
+  id: string;
   results: Results;
   purchase: Purchase;
   renovation: Renovation;
   financing: Financing;
   annualExpenses: AnnualExpenses;
   rent: Rent;
+  userId?: string;
 }
 
 export interface Results {

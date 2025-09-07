@@ -1,4 +1,5 @@
 <section>
+  @if (!loading) {
   <form>
     <mat-form-field>
       <mat-label>INITIAL AMOUNT</mat-label>
@@ -60,7 +61,18 @@
       <span matSuffix>€</span>
     </mat-form-field>
   </form>
-  @if (investmentsSimulator.goalAmount && investmentsSimulator.monthsToGoal &&
+  @if(updateNeeded) {
+  <div class="button-container">
+    <button
+      type="button"
+      (click)="updateSimulator()"
+      class="update"
+      title="Update Simulator"
+    >
+      <i class="bx bx-check"></i>
+    </button>
+  </div>
+  } @if (investmentsSimulator.goalAmount && investmentsSimulator.monthsToGoal &&
   investmentsSimulator.goalAmount <
   investmentsSimulator.yearly.total[investmentsSimulator.yearly.total.length -
   1]) {
@@ -95,8 +107,11 @@
   <div class="description">
     <span>Set a higher goal to see when you can reach it</span>
   </div>
-  }
+  } }
   <div class="graph">
     <canvas id="barGraph"></canvas>
   </div>
 </section>
+@if (loading) {
+<mat-spinner></mat-spinner>
+}

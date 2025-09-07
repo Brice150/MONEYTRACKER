@@ -26,7 +26,7 @@ import { RealEstate } from '../interfaces/real-estate';
 export class RealEstateService {
   firestore = inject(Firestore);
   userService = inject(UserService);
-  propertiesCollection = collection(this.firestore, 'real-estate');
+  realEstateCollection = collection(this.firestore, 'real-estate');
 
   getRealEstate(): Observable<RealEstate[]> {
     const userId = this.userService.auth.currentUser?.uid;
@@ -40,7 +40,7 @@ export class RealEstateService {
   }
 
   addRealEstate(realEstate: RealEstate): Observable<string> {
-    const realEstateDoc = doc(this.propertiesCollection);
+    const realEstateDoc = doc(this.realEstateCollection);
     realEstate.id = realEstateDoc.id;
     realEstate.userId = this.userService.auth.currentUser?.uid;
 
@@ -64,7 +64,7 @@ export class RealEstateService {
 
   deleteUserRealEstate(): Observable<void> {
     const realEstateQuery = query(
-      this.propertiesCollection,
+      this.realEstateCollection,
       where('userId', '==', this.userService.auth.currentUser?.uid)
     );
 

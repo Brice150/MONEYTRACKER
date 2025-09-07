@@ -69,6 +69,48 @@ section form mat-label {
   color: var(--secondary);
 }
 
+section .button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+section .update {
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.5s ease;
+  box-shadow: var(--box-shadow);
+  color: var(--secondary);
+  border-radius: var(--light-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: var(--background-card);
+}
+
+section .update i {
+  font-size: 50px;
+}
+
+section .update:hover {
+  color: var(--primary);
+  background-color: var(--secondary);
+}
+
+mat-spinner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+::ng-deep .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--accent) !important;
+}
+
 ::ng-deep section form .mat-mdc-form-field-icon-suffix {
   color: var(--primary);
 }

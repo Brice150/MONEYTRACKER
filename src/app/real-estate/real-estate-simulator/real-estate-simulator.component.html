@@ -1,4 +1,5 @@
 <section>
+  @if(!loading) {
   <div class="results">
     <div class="value-container">
       <div class="subtitle">
@@ -344,4 +345,19 @@
       </mat-form-field>
     </div>
   </form>
+  @if(updateNeeded) {
+  <div class="button-container">
+    <button
+      type="button"
+      (click)="updateSimulator()"
+      class="update"
+      title="Update Simulator"
+    >
+      <i class="bx bx-check"></i>
+    </button>
+  </div>
+  } }
 </section>
+@if (loading) {
+<mat-spinner></mat-spinner>
+}

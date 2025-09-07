@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,10 @@ import { Chart } from 'chart.js';
 import { InvestmentsSimulator } from '../../core/interfaces/investments-simulator';
 import { ToastrService } from 'ngx-toastr';
 import { DisableScrollDirective } from '../../shared/directives/disable-scroll.directive';
+import { Subject, take, takeUntil } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { InvestmentsSimulatorService } from '../../core/services/investments-simulator.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-investments-simulator',
@@ -16,31 +20,88 @@ import { DisableScrollDirective } from '../../shared/directives/disable-scroll.d
     MatFormFieldModule,
     MatInputModule,
     DisableScrollDirective,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './investments-simulator.component.html',
   styleUrl: './investments-simulator.component.css',
 })
-export class InvestmentsSimulatorComponent implements OnInit {
-  investmentsSimulator: InvestmentsSimulator = {
-    totalAmount: 1000,
-    amountPerMonth: 100,
-    percentage: 8,
-    goalAmount: 10000,
-    monthsToGoal: undefined,
-    yearly: {
-      date: Array.from({ length: 41 }, (_, i) => i.toString()),
-      invested: [1000],
-      interests: [0],
-      total: [1000],
-    },
-  };
+export class InvestmentsSimulatorComponent implements OnInit, OnDestroy {
+  investmentsSimulator: InvestmentsSimulator = {} as InvestmentsSimulator;
   barGraph?: Chart<'bar', number[], string>;
   toastr = inject(ToastrService);
+  investmentsSimulatorService = inject(InvestmentsSimulatorService);
+  loading: boolean = true;
+  destroyed$ = new Subject<void>();
+  updateNeeded: boolean = false;
 
   ngOnInit(): void {
+    this.investmentsSimulatorService
+      .getInvestmentsSimulator()
+      .pipe(take(1), takeUntil(this.destroyed$))
+      .subscribe({
+        next: (investmentsSimulator: InvestmentsSimulator[]) => {
+          if (investmentsSimulator[0]) {
+            this.investmentsSimulator = investmentsSimulator[0];
+            this.loading = false;
+            this.displayGraph();
+          } else {
+            this.initData();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  initData(): void {
+    const investmentsSimulator: InvestmentsSimulator = {
+      totalAmount: 1000,
+      amountPerMonth: 100,
+      percentage: 8,
+      goalAmount: 10000,
+      monthsToGoal: undefined,
+      yearly: {
+        date: Array.from({ length: 41 }, (_, i) => i.toString()),
+        invested: [1000],
+        interests: [0],
+        total: [1000],
+      },
+    } as InvestmentsSimulator;
+
+    this.investmentsSimulator = investmentsSimulator;
     this.calculateAmounts();
     this.calculateGoal();
-    this.displayGraph();
+
+    this.investmentsSimulatorService
+      .addInvestmentsSimulator(this.investmentsSimulator)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.displayGraph();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   displayGraph(): void {
@@ -211,21 +272,24 @@ export class InvestmentsSimulatorComponent implements OnInit {
   }
 
   update(goalChanged = false): void {
+    if (!this.isFormValid()) {
+      this.toastr.info('Invalid Simulator', 'Investments Simulator', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+      return;
+    }
+
+    this.updateNeeded = true;
+
     if (goalChanged) {
       this.calculateGoal();
       return;
     }
 
-    if (this.isFormValid()) {
-      this.calculateAmounts();
-      this.calculateGoal();
-      this.updateGraph();
-    } else {
-      this.toastr.info('Invalid Simulator', 'Investments Simulator', {
-        positionClass: 'toast-bottom-center',
-        toastClass: 'ngx-toastr custom error',
-      });
-    }
+    this.calculateAmounts();
+    this.calculateGoal();
+    this.updateGraph();
   }
 
   isFormValid(): boolean {
@@ -243,6 +307,38 @@ export class InvestmentsSimulatorComponent implements OnInit {
       this.investmentsSimulator.percentage !== undefined &&
       this.investmentsSimulator.percentage !== null
     );
+  }
+
+  updateSimulator(): void {
+    if (!this.isFormValid()) {
+      this.toastr.info('Invalid Simulator', 'Investments Simulator', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+      return;
+    }
+
+    this.investmentsSimulatorService
+      .updateInvestmentsSimulator(this.investmentsSimulator)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: () => {
+          this.updateNeeded = false;
+          this.toastr.info('Simulator updated', 'Investments Simulator', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments Simulator', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   updateGraph(): void {
