@@ -63,6 +63,7 @@ section form mat-label {
   font-size: 20px;
   font-weight: 500;
   color: var(--primary);
+  text-align: center;
 }
 
 .description span span {

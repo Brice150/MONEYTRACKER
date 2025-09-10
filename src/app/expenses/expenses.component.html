@@ -87,6 +87,53 @@
     <div class="graph" [ngClass]="{ visible: expenses.expenses.length > 0 }">
       <canvas id="expensesDoughnutGraph"></canvas>
     </div>
+    <form>
+      <mat-form-field>
+        <mat-label>INCOME</mat-label>
+        <input
+          appDisableScroll
+          matInput
+          [(ngModel)]="expenses.income"
+          name="income"
+          type="number"
+          (ngModelChange)="toggleUpdateNeededIncome()"
+          [min]="getTotal()"
+          max="1000000000"
+        />
+        <span matSuffix>€</span>
+      </mat-form-field>
+    </form>
+    @if(updateNeededIncome) {
+    <div class="button-container">
+      <button
+        type="button"
+        (click)="updateExpenses()"
+        class="update"
+        title="Update Income"
+      >
+        <i class="bx bx-check"></i>
+      </button>
+    </div>
+    } @if (expenses.income && expenses.income >= getTotal()) {
+    <div class="description">
+      <span>
+        You have a
+        <span>{{
+          (expenses.income - getTotal()) / expenses.income
+            | percent : "1.1-1" : "fr-FR"
+        }}</span>
+        savings rate
+      </span>
+    </div>
+    } @else if (expenses.income && expenses.income < getTotal()) {
+    <div class="description">
+      <span>Set a higher income to see your savings rate</span>
+    </div>
+    } @else {
+    <div class="description">
+      <span>Set an income to see your savings rate</span>
+    </div>
+    }
   </div>
 </section>
 @if(loading) {

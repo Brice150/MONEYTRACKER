@@ -41,6 +41,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   destroyed$ = new Subject<void>();
   updateNeeded: boolean = false;
+  updateNeededIncome: boolean = false;
 
   ngOnInit(): void {
     this.expenses.expenses = [];
@@ -155,6 +156,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.updateNeeded = true;
   }
 
+  toggleUpdateNeededIncome(): void {
+    this.updateNeededIncome = true;
+  }
+
   saveUserExpenses(toastrMessage: string): void {
     this.loading = true;
     if (!this.expenses.id) {
@@ -191,6 +196,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.updateExpensesGraph();
             this.updateNeeded = false;
+            this.updateNeededIncome = false;
             this.toastr.info('Expense ' + toastrMessage, 'Expenses', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
@@ -241,18 +247,29 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   }
 
   updateExpenses(): void {
-    if (
+    const expensesValid =
       !this.expenses.expenses.some((expense) => expense.amount < 0) &&
       this.expenses.expenses.every(
         (expense) =>
           expense.amount !== undefined &&
           expense.amount !== null &&
           expense.title
-      )
-    ) {
+      );
+
+    const incomeValid =
+      this.expenses.income != undefined &&
+      this.expenses.income != null &&
+      this.expenses.income >= this.getTotal();
+
+    if (expensesValid && incomeValid) {
       this.saveUserExpenses('updated');
-    } else {
+    } else if (!expensesValid) {
       this.toastr.info('Invalid expense', 'Expenses', {
+        positionClass: 'toast-bottom-center',
+        toastClass: 'ngx-toastr custom error',
+      });
+    } else if (!incomeValid) {
+      this.toastr.info('Invalid income', 'Income', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',
       });
