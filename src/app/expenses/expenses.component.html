@@ -97,7 +97,7 @@
           name="income"
           type="number"
           (ngModelChange)="toggleUpdateNeededIncome()"
-          [min]="getTotal()"
+          min="0"
           max="1000000000"
         />
         <span matSuffix>€</span>
@@ -114,7 +114,8 @@
         <i class="bx bx-check"></i>
       </button>
     </div>
-    } @if (expenses.income && expenses.income >= getTotal()) {
+    } @if (expenses.income && ((expenses.income - getTotal()) / expenses.income
+    >= 0)) {
     <div class="description">
       <span>
         You have a
@@ -125,9 +126,19 @@
         savings rate
       </span>
     </div>
-    } @else if (expenses.income && expenses.income < getTotal()) {
+    } @else if (expenses.income && ((expenses.income - getTotal()) /
+    expenses.income < 0)) {
     <div class="description">
-      <span>Set a higher income to see your savings rate</span>
+      <span>
+        You are losing
+        <span style="color: red"
+          >{{
+            getTotal() - expenses.income | number : "1.0-0" : "fr-FR"
+          }}
+          €</span
+        >
+        / Month
+      </span>
     </div>
     } @else {
     <div class="description">

@@ -256,19 +256,16 @@ export class ExpensesComponent implements OnInit, OnDestroy {
           expense.title
       );
 
-    const incomeValid =
-      this.expenses.income != undefined &&
-      this.expenses.income != null &&
-      this.expenses.income >= this.getTotal();
+    const incomeInvalid = this.expenses.income && this.expenses.income < 0;
 
-    if (expensesValid && incomeValid) {
+    if (expensesValid && !incomeInvalid) {
       this.saveUserExpenses('updated');
     } else if (!expensesValid) {
       this.toastr.info('Invalid expense', 'Expenses', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',
       });
-    } else if (!incomeValid) {
+    } else if (incomeInvalid) {
       this.toastr.info('Invalid income', 'Income', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',
