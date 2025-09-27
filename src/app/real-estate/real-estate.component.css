@@ -209,6 +209,7 @@ mat-spinner {
   transition: 0.5s ease;
   width: 150px;
   border: none;
+  box-shadow: var(--box-shadow);
 }
 
 .simulator:hover {
