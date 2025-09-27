@@ -17,7 +17,7 @@ import { SecurityDialogComponent } from '../shared/components/security-dialog/se
 import { SecurityComponent } from './security/security.component';
 
 @Component({
-  selector: 'app-profil',
+  selector: 'app-profile',
   imports: [
     CommonModule,
     RouterModule,
