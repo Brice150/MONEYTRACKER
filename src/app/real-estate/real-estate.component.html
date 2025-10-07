@@ -20,106 +20,47 @@
         >
       </div>
     </div>
-    <form>
+    <div class="content">
       @for (property of realEstate.properties; track $index; let index = $index)
       {
       <div class="card">
-        <mat-form-field>
-          <mat-label>TYPE</mat-label>
-          <mat-select
-            [(ngModel)]="property.type"
-            (ngModelChange)="toggleUpdateNeeded()"
-            [name]="'type' + index"
-          >
-            @for (type of PropertyType; track type) {
-            <mat-option [value]="type">{{ type }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>CITY</mat-label>
-          <input
-            matInput
-            [(ngModel)]="property.city"
-            [name]="'city' + index"
-            type="text"
-            (ngModelChange)="toggleUpdateNeeded()"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>SURFACE</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="property.surface"
-            [name]="'surface' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="1000000000"
-            required
-          />
-          <span matSuffix>m²</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>PRICE</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="property.price"
-            [name]="'price' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="1000000000"
-            required
-          />
-          <span matSuffix>€</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>RENT</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="property.rent"
-            [name]="'rent' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="1000000000"
-            required
-          />
-          <span matSuffix>€</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>OWNERSHIP</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="property.ownershipRatio"
-            [name]="'ownershipRatio' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="100"
-            required
-          />
-          <span matSuffix>%</span>
-        </mat-form-field>
-        <div class="delete-container">
-          <button
-            type="button"
-            (click)="deleteProperty(index)"
-            class="delete"
-            title="Delete Property"
-          >
-            <i class="bx bx-x"></i>
-          </button>
+        <div class="container type">
+          <i class="bx bxs-building-house"></i>
+          <span>{{ property.type }}</span>
+        </div>
+        <div class="container">
+          <i class="bx bxs-map"></i>
+          <span class="label">City :</span>
+          <span class="value ellipsis">{{ property.city }}</span>
+        </div>
+        <div class="container">
+          <i class="bx bxs-map-pin"></i>
+          <span class="label">Surface :</span>
+          <span class="value">{{ property.surface }} m²</span>
+        </div>
+        <div class="container">
+          <i class="bx bx-money-withdraw"></i>
+          <span class="label">Price :</span>
+          <span class="value">{{ property.price }} €</span>
+        </div>
+        <div class="container">
+          <i class="bx bxl-airbnb"></i>
+          <span class="label">Rent :</span>
+          <span class="value">{{ property.rent }} €</span>
+        </div>
+        <div class="container">
+          <i class="bx bx-sitemap"></i>
+          <span class="label">Ownership :</span>
+          <span class="value">{{ property.ownershipRatio }} %</span>
+        </div>
+        <div class="container">
+          <i class="bx bxs-bank"></i>
+          <span class="label">Unpaid :</span>
+          <span class="value">{{ property.remainingLoan }} €</span>
         </div>
       </div>
       }
-    </form>
+    </div>
     <div class="button-container">
       <button
         type="button"
@@ -129,16 +70,6 @@
       >
         <i class="bx bx-plus"></i>
       </button>
-      @if(updateNeeded) {
-      <button
-        type="button"
-        (click)="updateProperties()"
-        class="update"
-        title="Update Properties"
-      >
-        <i class="bx bx-check"></i>
-      </button>
-      }
     </div>
     <button
       type="button"

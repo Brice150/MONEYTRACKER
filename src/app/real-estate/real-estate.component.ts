@@ -1,31 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, take, takeUntil } from 'rxjs';
 import { PropertyType } from '../core/enums/property-type.enum';
 import { RealEstate } from '../core/interfaces/real-estate';
 import { RealEstateService } from '../core/services/real-estate.service';
-import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-real-estate',
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    RouterModule,
-    DisableScrollDirective,
-  ],
+  imports: [CommonModule, MatProgressSpinnerModule, RouterModule],
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
 })
@@ -81,6 +67,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
       rent: 0,
       surface: 40,
       ownershipRatio: 100,
+      remainingLoan: 0,
     });
     this.saveUserRealEstates('added');
   }
@@ -185,7 +172,9 @@ export class RealEstateComponent implements OnInit, OnDestroy {
     }
 
     for (let property of this.realEstate.properties) {
-      total += property.price * (property.ownershipRatio / 100);
+      total +=
+        (property.price - property.remainingLoan) *
+        (property.ownershipRatio / 100);
     }
     return total;
   }
