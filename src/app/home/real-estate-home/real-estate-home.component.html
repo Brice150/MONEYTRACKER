@@ -3,56 +3,30 @@
     <span>Real Estate</span>
   </div>
   <div class="content">
-    @for (property of realEstate().properties; track $index; let index = $index) {
-    <div class="card">
-      <div class="container type">
-        <i class="bx bxs-building-house"></i>
-        <span>{{ property.type }}</span>
-      </div>
-      <div class="container">
-        <i class="bx bxs-map"></i>
-        <span class="ellipsis">{{ property.city }}</span>
-      </div>
-      <div class="container">
-        <i class="bx bxs-map-pin"></i>
-        <span>{{ property.surface }} m²</span>
-      </div>
-      <div class="container">
-        <i class="bx bx-money-withdraw"></i>
-        <span>{{ property.price }} €</span>
-      </div>
-      <div class="container">
-        <i class="bx bxl-airbnb"></i>
-        <span>{{ property.rent }} €</span>
-      </div>
-      <div class="container">
-        <i class="bx bx-sitemap"></i>
-        <span>{{ property.ownershipRatio }} %</span>
-      </div>
-    </div>
-    } @if (!loading()) {
-    <div class="value-container">
-      <div class="element">
-        <div class="subtitle">
-          <i class="bx bxs-building-house"></i>
-          <span>Total :</span>
-        </div>
-        <span class="number"
-          >{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span
-        >
-      </div>
-      <div class="element">
-        <div class="subtitle">
-          <i class="bx bxl-airbnb"></i>
-          <span>Rent :</span>
-        </div>
-        <span class="number"
-          >{{ getTotalRent() | number : "1.0-0" : "fr-FR" }} € / Month</span
-        >
-      </div>
-    </div>
-    } @else {
-    <mat-spinner></mat-spinner>
-    }
+    <canvas id="realEstateDoughnutGraph"></canvas>
   </div>
+  @if (!loading()) {
+  <div class="value-container">
+    <div class="element">
+      <div class="subtitle">
+        <i class="bx bxs-building-house"></i>
+        <span>Total :</span>
+      </div>
+      <span class="number"
+        >{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span
+      >
+    </div>
+    <div class="element">
+      <div class="subtitle">
+        <i class="bx bxl-airbnb"></i>
+        <span>Rent :</span>
+      </div>
+      <span class="number"
+        >{{ getTotalRent() | number : "1.0-0" : "fr-FR" }} € / Month</span
+      >
+    </div>
+  </div>
+  } @else {
+  <mat-spinner></mat-spinner>
+  }
 </section>

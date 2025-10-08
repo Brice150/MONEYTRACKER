@@ -73,12 +73,14 @@ section .button-container button .text {
 section .content {
   padding: 30px 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   width: 90%;
   gap: 20px;
   max-width: 350px;
+  max-height: 75vh;
+  overflow-y: auto;
 }
 
 section .content mat-form-field {
@@ -93,8 +95,34 @@ section .content mat-form-field mat-error span {
   font-size: 16px;
 }
 
-.mat-icon {
+.flex i {
+  font-size: 32px;
+}
+
+.type {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   color: var(--accent);
+}
+
+.mat-mdc-option-active .flex {
+  color: var(--primary);
+}
+
+mat-option:hover {
+  background-color: var(--accent) !important;
+}
+
+mat-option:hover .flex {
+  color: var(--primary);
 }
 
 ::ng-deep
@@ -188,4 +216,86 @@ section .content mat-form-field mat-error span {
 
 ::ng-deep .mdc-text-field--filled.mdc-text-field--disabled .mdc-floating-label {
   color: var(--accent) !important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: var(--primary) !important;
+}
+
+::ng-deep .mat-mdc-select {
+  color: var(--accent) !important;
+}
+
+::ng-deep .mat-mdc-select-arrow svg {
+  fill: var(--accent) !important;
+}
+
+::ng-deep
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+    .mat-mdc-option-multiple
+  ) {
+  background-color: var(--accent) !important;
+}
+
+::ng-deep
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+    .mat-mdc-option-multiple
+  )
+  .mdc-list-item__primary-text {
+  color: var(--primary) !important;
+}
+
+::ng-deep
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+    .mat-mdc-option-multiple
+  )
+  .mdc-list-item__primary-text
+  .flex
+  i {
+  color: var(--primary) !important;
+}
+
+::ng-deep
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+    .mat-mdc-option-multiple
+  )
+  .mdc-list-item__primary-text
+  .flex
+  .game {
+  color: var(--primary) !important;
+}
+
+::ng-deep .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after,
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-indeterminate::after {
+  color: var(--primary) !important;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: var(--background-card) !important;
+}
+
+::ng-deep
+  .mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-line-ripple::before {
+  border-bottom-color: var(--accent) !important;
+}
+
+::ng-deep
+  .mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-line-ripple::after {
+  border-bottom-color: var(--accent) !important;
+}
+
+::ng-deep .mdc-text-field {
+  border-radius: var(--light-radius) !important;
+}
+
+::ng-deep .mat-mdc-select-value {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

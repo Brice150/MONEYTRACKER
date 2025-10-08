@@ -35,7 +35,7 @@ export class RealEstateSimulatorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.realEstateSimulatorService
       .getRealEstateSimulator()
-      .pipe(take(1), takeUntil(this.destroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (realEstateSimulator: RealEstateSimulator[]) => {
           if (realEstateSimulator[0]) {

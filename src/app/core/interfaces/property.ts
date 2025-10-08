@@ -7,4 +7,5 @@ export interface Property {
   price: number;
   rent: number;
   ownershipRatio: number;
+  remainingLoan: number;
 }
