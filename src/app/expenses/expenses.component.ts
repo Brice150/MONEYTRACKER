@@ -47,7 +47,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.expenses.expenses = [];
     this.expensesService
       .getExpenses()
-      .pipe(take(1), takeUntil(this.destroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (expenses: Expenses[]) => {
           if (expenses[0]?.expenses?.length >= 0) {

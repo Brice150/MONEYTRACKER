@@ -37,7 +37,7 @@ export class InvestmentsSimulatorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.investmentsSimulatorService
       .getInvestmentsSimulator()
-      .pipe(take(1), takeUntil(this.destroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (investmentsSimulator: InvestmentsSimulator[]) => {
           if (investmentsSimulator[0]) {

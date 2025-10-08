@@ -49,7 +49,7 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     this.investments.investments = [];
     this.investmentsService
       .getInvestments()
-      .pipe(take(1), takeUntil(this.destroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (investments: Investments[]) => {
           if (investments[0]?.investments?.length >= 0) {

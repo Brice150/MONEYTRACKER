@@ -39,62 +39,6 @@ section .content {
   width: 95%;
 }
 
-section .content .card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  width: 300px;
-  box-shadow: var(--box-shadow);
-  border-radius: var(--strong-radius);
-}
-
-section .content .card .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-section .content .card .container.type {
-  color: var(--accent);
-  font-size: 20px;
-  font-weight: 900;
-}
-
-section .content .card .container {
-  color: var(--primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7px;
-}
-
-section .content .card .container i {
-  font-size: 30px;
-}
-
-section .content .card .container .label {
-  width: 95px;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-section .content .card .container .value {
-  width: 160px;
-  white-space: nowrap;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-section .content .card .container .value.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 section .add {
   text-decoration: none;
   cursor: pointer;
@@ -202,10 +146,4 @@ mat-spinner {
   font-size: 20px;
   font-weight: 500;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-@media screen and (max-width: 370px) {
-  section .content .card .container .value {
-    width: 120px;
-  }
 }

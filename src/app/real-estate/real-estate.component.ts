@@ -1,17 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, take, takeUntil } from 'rxjs';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { PropertyType } from '../core/enums/property-type.enum';
+import { Property } from '../core/interfaces/property';
 import { RealEstate } from '../core/interfaces/real-estate';
 import { RealEstateService } from '../core/services/real-estate.service';
+import { PropertyDialogComponent } from '../shared/components/property-dialog/property-dialog.component';
+import { PropertyComponent } from './property/property.component';
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-real-estate',
-  imports: [CommonModule, MatProgressSpinnerModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    RouterModule,
+    PropertyComponent,
+  ],
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
 })
@@ -21,13 +31,12 @@ export class RealEstateComponent implements OnInit, OnDestroy {
   realEstateService = inject(RealEstateService);
   loading: boolean = true;
   destroyed$ = new Subject<void>();
-  updateNeeded: boolean = false;
-  PropertyType: string[] = Object.values(PropertyType);
+  dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.realEstateService
       .getRealEstate()
-      .pipe(take(1), takeUntil(this.destroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (realEstate: RealEstate[]) => {
           if (realEstate[0]?.properties?.length > 0) {
@@ -54,11 +63,6 @@ export class RealEstateComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  deleteProperty(index: number): void {
-    this.realEstate.properties.splice(index, 1);
-    this.saveUserRealEstates('deleted');
-  }
-
   addProperty(): void {
     this.realEstate.properties.push({
       type: PropertyType.HOUSE,
@@ -72,36 +76,76 @@ export class RealEstateComponent implements OnInit, OnDestroy {
     this.saveUserRealEstates('added');
   }
 
-  updateProperties(): void {
-    if (
-      !this.realEstate.properties.some(
-        (property) =>
-          property.surface < 0 ||
-          property.price < 0 ||
-          property.rent < 0 ||
-          property.ownershipRatio < 0 ||
-          property.ownershipRatio > 100
-      ) &&
-      this.realEstate.properties.every(
-        (property) =>
-          property.city &&
-          property.surface !== undefined &&
-          property.surface !== null &&
-          property.price !== undefined &&
-          property.price !== null &&
-          property.ownershipRatio !== undefined &&
-          property.ownershipRatio !== null &&
-          property.rent !== undefined &&
-          property.rent !== null
+  updateProperty(property: Property, index: number): void {
+    const dialogRef = this.dialog.open(PropertyDialogComponent, {
+      data: structuredClone(property),
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res) => !!res),
+        switchMap((res: Property) => {
+          this.loading = true;
+          this.realEstate.properties[index] = res;
+          return this.realEstateService.updateRealEstate(this.realEstate);
+        }),
+        takeUntil(this.destroyed$)
       )
-    ) {
-      this.saveUserRealEstates('updated');
-    } else {
-      this.toastr.info('Invalid property', 'Real Estate', {
-        positionClass: 'toast-bottom-center',
-        toastClass: 'ngx-toastr custom error',
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.toastr.info('Property updated', 'Real Estate', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
       });
-    }
+  }
+
+  deleteProperty(propertyIndex: number): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'delete this property',
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res: boolean) => res),
+        switchMap(() => {
+          this.loading = true;
+          this.realEstate.properties.splice(propertyIndex, 1);
+          return this.realEstateService.updateRealEstate(this.realEstate);
+        }),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.toastr.info('Property deleted', 'Real Estate', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Real Estate', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   saveUserRealEstates(toastrMessage: string): void {
@@ -137,7 +181,6 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.loading = false;
-            this.updateNeeded = false;
             this.toastr.info('Properties ' + toastrMessage, 'Real Estate', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
@@ -156,10 +199,6 @@ export class RealEstateComponent implements OnInit, OnDestroy {
           },
         });
     }
-  }
-
-  toggleUpdateNeeded(): void {
-    this.updateNeeded = true;
   }
 
   getTotal(): number {

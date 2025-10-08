@@ -23,42 +23,11 @@
     <div class="content">
       @for (property of realEstate.properties; track $index; let index = $index)
       {
-      <div class="card">
-        <div class="container type">
-          <i class="bx bxs-building-house"></i>
-          <span>{{ property.type }}</span>
-        </div>
-        <div class="container">
-          <i class="bx bxs-map"></i>
-          <span class="label">City :</span>
-          <span class="value ellipsis">{{ property.city }}</span>
-        </div>
-        <div class="container">
-          <i class="bx bxs-map-pin"></i>
-          <span class="label">Surface :</span>
-          <span class="value">{{ property.surface }} m²</span>
-        </div>
-        <div class="container">
-          <i class="bx bx-money-withdraw"></i>
-          <span class="label">Price :</span>
-          <span class="value">{{ property.price }} €</span>
-        </div>
-        <div class="container">
-          <i class="bx bxl-airbnb"></i>
-          <span class="label">Rent :</span>
-          <span class="value">{{ property.rent }} €</span>
-        </div>
-        <div class="container">
-          <i class="bx bx-sitemap"></i>
-          <span class="label">Ownership :</span>
-          <span class="value">{{ property.ownershipRatio }} %</span>
-        </div>
-        <div class="container">
-          <i class="bx bxs-bank"></i>
-          <span class="label">Unpaid :</span>
-          <span class="value">{{ property.remainingLoan }} €</span>
-        </div>
-      </div>
+      <app-property
+        [property]="property"
+        (updateSessionEvent)="updateProperty(property, index)"
+        (deleteSessionEvent)="deleteProperty(index)"
+      ></app-property>
       }
     </div>
     <div class="button-container">
