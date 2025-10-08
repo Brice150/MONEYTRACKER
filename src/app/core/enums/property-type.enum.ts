@@ -4,6 +4,7 @@ export enum PropertyType {
   APPARTMENT = 'Appartment',
   LAND = 'Land',
   PARKING = 'Parking',
+  COMMERCIAL = 'Commercial',
   OTHER = 'Other',
 }
 
@@ -13,5 +14,6 @@ export const PropertyTypeIcons: Record<PropertyType, string> = {
   [PropertyType.APPARTMENT]: 'bx bxs-building-house',
   [PropertyType.LAND]: 'bx bxs-landscape',
   [PropertyType.PARKING]: 'bx bxs-parking',
-  [PropertyType.OTHER]: 'bx bxs-category',
+  [PropertyType.COMMERCIAL]: 'bx bxs-store',
+  [PropertyType.OTHER]: 'bx bxs-home-smile',
 };

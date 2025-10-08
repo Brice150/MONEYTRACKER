@@ -10,7 +10,7 @@
     </button>
   </div>
   <div class="container type">
-    <i class="bx bxs-building-house"></i>
+    <i [ngClass]="propertyTypeIcons[property().type]"></i>
     <span>{{ property().type }}</span>
   </div>
   <div class="container">

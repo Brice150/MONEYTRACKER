@@ -1,30 +1,100 @@
 <section mat-dialog-content>
   <h1>Update Property</h1>
-  <form class="content">
-    <mat-form-field appearance="outline">
-      <mat-label>PROPERTY TYPE</mat-label>
-      <mat-select
-        [(ngModel)]="property.type"
-        [ngModelOptions]="{ standalone: true }"
-      >
-        <mat-select-trigger>
-          <i [ngClass]="propertyTypeIcons[property.type]" class="me-2"></i>
-          {{ property.type }}
-        </mat-select-trigger>
-        @for (type of propertyTypes; track $index) {
-        <mat-option [value]="type">
-          <i [ngClass]="propertyTypeIcons[type]" class="me-2"></i>
-          {{ type }}
+  <form class="content" (ngSubmit)="confirm()">
+    <mat-form-field>
+      <mat-label>TYPE</mat-label>
+      <mat-select [(ngModel)]="property.type" name="type">
+        @for (type of propertyTypes; track type) {
+        <mat-option [value]="type" class="cap-option">
+          <div class="flex">
+            <i [ngClass]="propertyTypeIcons[type]"></i>
+            <span class="type">{{ type }}</span>
+          </div>
         </mat-option>
         }
       </mat-select>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>CITY</mat-label>
+      <input
+        matInput
+        [(ngModel)]="property.city"
+        name="city"
+        type="text"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>SURFACE</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="property.surface"
+        name="surface"
+        type="number"
+        min="0"
+        max="1000000000"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>PRICE</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="property.price"
+        name="price"
+        type="number"
+        min="0"
+        max="1000000000"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>RENT</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="property.rent"
+        name="rent"
+        type="number"
+        min="0"
+        max="1000000000"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>OWNERSHIP</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="property.ownershipRatio"
+        name="ownershipRatio"
+        type="number"
+        min="0"
+        max="100"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>UNPAID</mat-label>
+      <input
+        appDisableScroll
+        matInput
+        [(ngModel)]="property.remainingLoan"
+        name="remainingLoan"
+        type="number"
+        min="0"
+        max="1000000000"
+        required
+      />
+    </mat-form-field>
     <div class="button-container">
-      <button type="button" title="Cancel" (click)="cancel()" class="cancel">
+      <button type="button" title="Cancel" (click)="cancel()" class="delete">
         <i class="bx bx-x"></i>
         <span class="text">Cancel</span>
       </button>
-      <button type="button" title="Confirm" (click)="confirm()">
+      <button type="submit" title="Confirm">
         <i class="bx bx-check"></i>
         <span class="text">Confirm</span>
       </button>
