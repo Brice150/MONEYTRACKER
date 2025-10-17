@@ -40,16 +40,19 @@
         <i class="bx bx-plus"></i>
       </button>
     </div>
-    <button
-      type="button"
-      class="simulator"
-      routerLink="/real-estate/simulator"
-      title="Real Estate Simulator"
-    >
-      <i class="bx bx-spreadsheet"></i>
-      <span class="text">Simulator</span>
-    </button>
   </div>
+  <div class="graph" [ngClass]="{ visible: realEstate.properties.length > 0 }">
+    <canvas id="realEstateDoughnutGraph"></canvas>
+  </div>
+  <button
+    type="button"
+    class="simulator"
+    routerLink="/real-estate/simulator"
+    title="Real Estate Simulator"
+  >
+    <i class="bx bx-spreadsheet"></i>
+    <span class="text">Simulator</span>
+  </button>
 </section>
 @if(loading) {
 <mat-spinner></mat-spinner>

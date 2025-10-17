@@ -21,6 +21,30 @@ section {
   border-radius: var(--strong-radius);
 }
 
+.graph {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+}
+
+.graph.visible {
+  width: 100%;
+  height: 500px;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease-in-out;
+}
+
+.graph.width {
+  width: 95%;
+}
+
 .column {
   display: flex;
   justify-content: center;

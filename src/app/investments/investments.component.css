@@ -276,21 +276,11 @@ mat-spinner {
 }
 
 @media screen and (max-width: 740px) {
-  .graph {
-    height: 400px;
-  }
-
   section .delete-container {
     width: 210px;
   }
 
   section form .row {
     margin: 10px 0;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .graph {
-    height: 350px;
   }
 }

@@ -4,15 +4,16 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
+import { Chart } from 'chart.js';
 import { ToastrService } from 'ngx-toastr';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { PropertyType } from '../core/enums/property-type.enum';
 import { Property } from '../core/interfaces/property';
 import { RealEstate } from '../core/interfaces/real-estate';
 import { RealEstateService } from '../core/services/real-estate.service';
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { PropertyDialogComponent } from '../shared/components/property-dialog/property-dialog.component';
 import { PropertyComponent } from './property/property.component';
-import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-real-estate',
@@ -27,6 +28,7 @@ import { ConfirmationDialogComponent } from '../shared/components/confirmation-d
 })
 export class RealEstateComponent implements OnInit, OnDestroy {
   realEstate: RealEstate = {} as RealEstate;
+  doughnutGraph?: Chart<'doughnut', number[], string>;
   toastr = inject(ToastrService);
   realEstateService = inject(RealEstateService);
   loading: boolean = true;
@@ -34,6 +36,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
 
   ngOnInit(): void {
+    this.realEstate.properties = [];
     this.realEstateService
       .getRealEstate()
       .pipe(takeUntil(this.destroyed$))
@@ -41,10 +44,9 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         next: (realEstate: RealEstate[]) => {
           if (realEstate[0]?.properties?.length > 0) {
             this.realEstate = realEstate[0];
-          } else {
-            this.realEstate.properties = [];
           }
           this.loading = false;
+          this.displayRealEstateDoughnutGraph();
         },
         error: (error: HttpErrorResponse) => {
           this.loading = false;
@@ -61,6 +63,84 @@ export class RealEstateComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  displayRealEstateDoughnutGraph(): void {
+    const graph = document.getElementById(
+      'realEstateDoughnutGraph'
+    ) as HTMLCanvasElement | null;
+
+    if (graph) {
+      this.doughnutGraph = new Chart(graph, {
+        type: 'doughnut',
+        data: {
+          labels: this.realEstate.properties.map(
+            (property: Property) => property.type + ' - ' + property.city
+          ),
+          datasets: [
+            {
+              label: 'Real Estate',
+              data: this.realEstate.properties.map(
+                (property: Property) =>
+                  (property.price - property.remainingLoan) *
+                  (property.ownershipRatio / 100)
+              ),
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 40,
+                font: {
+                  size: 16,
+                  weight: 800,
+                },
+                color: 'white',
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem: any) => {
+                  let dataset = tooltipItem.dataset;
+                  let total = dataset.data.reduce(
+                    (acc: number, value: number) => acc + value,
+                    0
+                  );
+                  let currentValue = Math.round(
+                    dataset.data[tooltipItem.dataIndex]
+                  ).toLocaleString('fr-FR');
+                  let percentage = (
+                    (dataset.data[tooltipItem.dataIndex] / total) *
+                    100
+                  ).toFixed(0);
+
+                  return `${currentValue} (${percentage}%)`;
+                },
+              },
+            },
+          },
+          color: '#006aff',
+        },
+      });
+    }
+  }
+
+  updateRealEstateDoughnutGraph(): void {
+    if (this.doughnutGraph) {
+      this.doughnutGraph.data.labels = this.realEstate.properties.map(
+        (property: Property) => property.type + ' - ' + property.city
+      );
+      this.doughnutGraph.data.datasets[0].data = this.realEstate.properties.map(
+        (property: Property) =>
+          (property.price - property.remainingLoan) *
+          (property.ownershipRatio / 100)
+      );
+      this.doughnutGraph.update();
+    }
   }
 
   addProperty(): void {
@@ -95,6 +175,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.loading = false;
+          this.updateRealEstateDoughnutGraph();
           this.toastr.info('Property updated', 'Real Estate', {
             positionClass: 'toast-bottom-center',
             toastClass: 'ngx-toastr custom info',
@@ -131,6 +212,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.loading = false;
+          this.updateRealEstateDoughnutGraph();
           this.toastr.info('Property deleted', 'Real Estate', {
             positionClass: 'toast-bottom-center',
             toastClass: 'ngx-toastr custom info',
@@ -157,6 +239,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.loading = false;
+            this.updateRealEstateDoughnutGraph();
             this.toastr.info('Property added', 'Real Estate', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
@@ -181,6 +264,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.loading = false;
+            this.updateRealEstateDoughnutGraph();
             this.toastr.info('Properties ' + toastrMessage, 'Real Estate', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
