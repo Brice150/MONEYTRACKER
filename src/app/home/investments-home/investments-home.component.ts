@@ -38,7 +38,12 @@ export class InvestmentsHomeComponent implements OnChanges {
         type: 'doughnut',
         data: {
           labels: this.investments().investments.map(
-            (investment: Investment) => investment.title
+            (investment: Investment) =>
+              `${
+                investment.title.length > 25
+                  ? investment.title.substring(0, 22) + '...'
+                  : investment.title
+              } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -66,15 +71,13 @@ export class InvestmentsHomeComponent implements OnChanges {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = Math.round(
-                    dataset.data[tooltipItem.dataIndex]
-                  ).toLocaleString('fr-FR');
+
                   let percentage = (
                     (dataset.data[tooltipItem.dataIndex] / total) *
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${percentage}%`;
                 },
               },
             },
@@ -88,10 +91,7 @@ export class InvestmentsHomeComponent implements OnChanges {
   getTotal(): number {
     let total: number = 0;
     const investments = this.investments();
-    if (
-      !investments.investments ||
-      investments.investments.length === 0
-    ) {
+    if (!investments.investments || investments.investments.length === 0) {
       return 0;
     }
 

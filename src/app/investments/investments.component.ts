@@ -86,7 +86,12 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
         type: 'doughnut',
         data: {
           labels: this.investments.investments.map(
-            (investment: Investment) => investment.title
+            (investment: Investment) =>
+              `${
+                investment.title.length > 15
+                  ? investment.title.substring(0, 12) + '...'
+                  : investment.title
+              } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -122,15 +127,13 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = Math.round(
-                    dataset.data[tooltipItem.dataIndex]
-                  ).toLocaleString('fr-FR');
+
                   let percentage = (
                     (dataset.data[tooltipItem.dataIndex] / total) *
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${percentage}%`;
                 },
               },
             },
@@ -146,7 +149,11 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     const labels = yearlyData.map((data) => `${data.year}`);
     const datasets = this.investments.investments.map((investment, index) => {
       return {
-        label: investment.title,
+        label: `${
+          investment.title.length > 15
+            ? investment.title.substring(0, 12) + '...'
+            : investment.title
+        } (${investment.totalAmount.toLocaleString('fr-FR')} €)`,
         data: yearlyData.map((data) => data.totals[index]),
         backgroundColor: investment.color,
       };
@@ -252,7 +259,12 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
   updateInvestmentsDoughnutGraph(): void {
     if (this.doughnutGraph) {
       this.doughnutGraph.data.labels = this.investments.investments.map(
-        (investment: Investment) => investment.title
+        (investment: Investment) =>
+          `${
+            investment.title.length > 15
+              ? investment.title.substring(0, 12) + '...'
+              : investment.title
+          } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
       );
       this.doughnutGraph.data.datasets[0].data =
         this.investments.investments.map(
@@ -272,7 +284,11 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
       const labels = yearlyData.map((data) => `${data.year}`);
       const datasets = this.investments.investments.map((investment, index) => {
         return {
-          label: investment.title,
+          label: `${
+            investment.title.length > 15
+              ? investment.title.substring(0, 12) + '...'
+              : investment.title
+          } (${investment.totalAmount.toLocaleString('fr-FR')} €)`,
           data: yearlyData.map((data) => data.totals[index]),
           backgroundColor: investment.color,
         };

@@ -21,26 +21,45 @@
   <div class="container">
     <i class="bx bxs-map-pin"></i>
     <span class="label">Surface :</span>
-    <span class="value">{{ property().surface }} m²</span>
+    <span class="value"
+      >{{ property().surface.toLocaleString("fr-FR") }} m²</span
+    >
   </div>
   <div class="container">
     <i class="bx bx-money-withdraw"></i>
     <span class="label">Price :</span>
-    <span class="value">{{ property().price }} €</span>
+    <span class="value">{{ property().price.toLocaleString("fr-FR") }} €</span>
   </div>
   <div class="container">
     <i class="bx bxl-airbnb"></i>
     <span class="label">Rent :</span>
-    <span class="value">{{ property().rent }} €</span>
+    <span class="value">{{ property().rent.toLocaleString("fr-FR") }} €</span>
   </div>
   <div class="container">
     <i class="bx bx-sitemap"></i>
     <span class="label">Ownership :</span>
-    <span class="value">{{ property().ownershipRatio }} %</span>
+    <span class="value"
+      >{{ property().ownershipRatio.toLocaleString("fr-FR") }} %</span
+    >
   </div>
   <div class="container">
     <i class="bx bxs-bank"></i>
     <span class="label">Unpaid :</span>
-    <span class="value">{{ property().remainingLoan }} €</span>
+    <span class="value"
+      >{{ property().remainingLoan.toLocaleString("fr-FR") }} €</span
+    >
+  </div>
+  <div class="container">
+    <i class="bx bxs-right-arrow-circle"></i>
+    <span class="label">Total :</span>
+    <span class="value total"
+      >{{
+        (
+          (property().price - property().remainingLoan) *
+          (property().ownershipRatio / 100)
+        ).toLocaleString("fr-FR")
+      }}
+      €</span
+    >
   </div>
 </div>

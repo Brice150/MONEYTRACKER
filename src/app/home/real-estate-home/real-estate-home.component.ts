@@ -38,7 +38,15 @@ export class RealEstateHomeComponent implements OnChanges {
         type: 'doughnut',
         data: {
           labels: this.realEstate().properties.map(
-            (property: Property) => property.type + ' - ' + property.city
+            (property: Property) =>
+              `${property.type} - ${
+                property.city.length > 25
+                  ? property.city.substring(0, 22) + '...'
+                  : property.city
+              } (${(
+                (property.price - property.remainingLoan) *
+                (property.ownershipRatio / 100)
+              ).toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -65,15 +73,13 @@ export class RealEstateHomeComponent implements OnChanges {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = Math.round(
-                    dataset.data[tooltipItem.dataIndex]
-                  ).toLocaleString('fr-FR');
+
                   let percentage = (
                     (dataset.data[tooltipItem.dataIndex] / total) *
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${percentage}%`;
                 },
               },
             },

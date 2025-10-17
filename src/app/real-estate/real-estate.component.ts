@@ -75,7 +75,15 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         type: 'doughnut',
         data: {
           labels: this.realEstate.properties.map(
-            (property: Property) => property.type + ' - ' + property.city
+            (property: Property) =>
+              `${property.type} - ${
+                property.city.length > 15
+                  ? property.city.substring(0, 12) + '...'
+                  : property.city
+              } (${(
+                (property.price - property.remainingLoan) *
+                (property.ownershipRatio / 100)
+              ).toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -110,15 +118,13 @@ export class RealEstateComponent implements OnInit, OnDestroy {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = Math.round(
-                    dataset.data[tooltipItem.dataIndex]
-                  ).toLocaleString('fr-FR');
+
                   let percentage = (
                     (dataset.data[tooltipItem.dataIndex] / total) *
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${percentage}%`;
                 },
               },
             },
@@ -132,7 +138,15 @@ export class RealEstateComponent implements OnInit, OnDestroy {
   updateRealEstateDoughnutGraph(): void {
     if (this.doughnutGraph) {
       this.doughnutGraph.data.labels = this.realEstate.properties.map(
-        (property: Property) => property.type + ' - ' + property.city
+        (property: Property) =>
+          `${property.type} - ${
+            property.city.length > 15
+              ? property.city.substring(0, 12) + '...'
+              : property.city
+          } (${(
+            (property.price - property.remainingLoan) *
+            (property.ownershipRatio / 100)
+          ).toLocaleString('fr-FR')} €)`
       );
       this.doughnutGraph.data.datasets[0].data = this.realEstate.properties.map(
         (property: Property) =>

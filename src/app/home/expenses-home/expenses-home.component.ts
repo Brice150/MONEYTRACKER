@@ -38,7 +38,12 @@ export class ExpensesHomeComponent implements OnChanges {
         type: 'doughnut',
         data: {
           labels: this.expenses().expenses.map(
-            (expense: Expense) => expense.title
+            (expense: Expense) =>
+              `${
+                expense.title.length > 25
+                  ? expense.title.substring(0, 22) + '...'
+                  : expense.title
+              } (${expense.amount.toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -66,15 +71,13 @@ export class ExpensesHomeComponent implements OnChanges {
                     (acc: number, value: number) => acc + value,
                     0
                   );
-                  let currentValue = Math.round(
-                    dataset.data[tooltipItem.dataIndex]
-                  ).toLocaleString('fr-FR');
+
                   let percentage = (
                     (dataset.data[tooltipItem.dataIndex] / total) *
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${percentage}%`;
                 },
               },
             },
