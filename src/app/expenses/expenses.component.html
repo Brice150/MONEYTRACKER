@@ -9,61 +9,15 @@
         >{{ getTotal() | number : "1.0-0" : "fr-FR" }} € / Month</span
       >
     </div>
-    <form>
+    <div class="content">
       @for (expense of expenses.expenses; track $index; let index = $index) {
-      <div class="row">
-        <mat-form-field>
-          <mat-label>TITLE</mat-label>
-          <input
-            matInput
-            [(ngModel)]="expense.title"
-            [name]="'title' + index"
-            type="text"
-            (ngModelChange)="toggleUpdateNeeded()"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>AMOUNT</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="expense.amount"
-            [name]="'amount' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="1000000000"
-            required
-          />
-          <span matSuffix>€</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label [ngStyle]="{ color: expense.color }">COLOR</mat-label>
-          <mat-select
-            [ngStyle]="{ color: expense.color }"
-            [(ngModel)]="expense.color"
-            (ngModelChange)="toggleUpdateNeeded()"
-            [name]="'color' + index"
-          >
-            @for (key of colorKeys; track key) {
-            <mat-option [value]="Color[key]">{{ key }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <div class="delete-container">
-          <button
-            type="button"
-            (click)="deleteExpense(index)"
-            class="delete"
-            title="Delete Expense"
-          >
-            <i class="bx bx-x"></i>
-          </button>
-        </div>
-      </div>
+      <app-expense
+        [expense]="expense"
+        (updateEvent)="updateExpense(expense, index)"
+        (deleteEvent)="deleteExpense(index)"
+      ></app-expense>
       }
-    </form>
+    </div>
     <div class="button-container">
       <button
         type="button"
@@ -73,16 +27,6 @@
       >
         <i class="bx bx-plus"></i>
       </button>
-      @if(updateNeeded) {
-      <button
-        type="button"
-        (click)="updateExpenses()"
-        class="update"
-        title="Update Expense"
-      >
-        <i class="bx bx-check"></i>
-      </button>
-      }
     </div>
     <div class="graph" [ngClass]="{ visible: expenses.expenses.length > 0 }">
       <canvas id="expensesDoughnutGraph"></canvas>
@@ -107,7 +51,7 @@
     <div class="button-container">
       <button
         type="button"
-        (click)="updateExpenses()"
+        (click)="updateIncome()"
         class="update"
         title="Update Income"
       >

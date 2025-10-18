@@ -24,7 +24,7 @@
         required
       />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="meter">
       <mat-label>SURFACE</mat-label>
       <input
         appDisableScroll
@@ -36,6 +36,7 @@
         max="1000000000"
         required
       />
+      <span matSuffix>m²</span>
     </mat-form-field>
     <mat-form-field>
       <mat-label>PRICE</mat-label>
@@ -49,6 +50,7 @@
         max="1000000000"
         required
       />
+      <span matSuffix>€</span>
     </mat-form-field>
     <mat-form-field>
       <mat-label>RENT</mat-label>
@@ -62,6 +64,7 @@
         max="1000000000"
         required
       />
+      <span matSuffix>€</span>
     </mat-form-field>
     <mat-form-field>
       <mat-label>OWNERSHIP</mat-label>
@@ -75,6 +78,7 @@
         max="100"
         required
       />
+      <span matSuffix>%</span>
     </mat-form-field>
     <mat-form-field>
       <mat-label>UNPAID</mat-label>
@@ -88,6 +92,7 @@
         max="1000000000"
         required
       />
+      <span matSuffix>€</span>
     </mat-form-field>
     <mat-form-field>
       <mat-label [ngStyle]="{ color: property.color }">COLOR</mat-label>

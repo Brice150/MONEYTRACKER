@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="update-container">
+    <button (click)="update()" class="update" title="Update">
+      <i class="bx bxs-edit-alt"></i>
+    </button>
+  </div>
+  <div class="delete-container">
+    <button (click)="delete()" class="delete" title="Delete">
+      <i class="bx bx-x"></i>
+    </button>
+  </div>
+  <div class="container type" [ngStyle]="{ color: investment().color }">
+    <span>{{ investment().title }}</span>
+  </div>
+  <div class="container">
+    <i class="bx bxs-right-arrow-circle"></i>
+    <span class="label">Total :</span>
+    <span class="value" [ngStyle]="{ color: investment().color }"
+      >{{ investment().totalAmount.toLocaleString("fr-FR") }} €</span
+    >
+  </div>
+  <div class="container">
+    <i class="bx bx-sort-up"></i>
+    <span class="label">Interests :</span>
+    <span class="value" [ngStyle]="{ color: investment().color }"
+      >{{ investment().interestRate.toLocaleString("fr-FR") }} %</span
+    >
+  </div>
+</div>

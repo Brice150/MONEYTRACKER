@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, input, Output } from '@angular/core';
-import { PropertyTypeIcons } from '../../core/enums/property-type.enum';
-import { Property } from '../../core/interfaces/property';
+import { Expense } from '../../core/interfaces/expense';
 
 @Component({
-  selector: 'app-property',
+  selector: 'app-expense',
   imports: [CommonModule],
-  templateUrl: './property.component.html',
-  styleUrl: './property.component.css',
+  templateUrl: './expense.component.html',
+  styleUrl: './expense.component.css',
 })
-export class PropertyComponent {
-  readonly property = input.required<Property>();
-  propertyTypeIcons = PropertyTypeIcons;
+export class ExpenseComponent {
+  readonly expense = input.required<Expense>();
   @Output() updateEvent = new EventEmitter<void>();
   @Output() deleteEvent = new EventEmitter<void>();
 

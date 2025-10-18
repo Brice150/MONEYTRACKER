@@ -9,77 +9,16 @@
         >{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span
       >
     </div>
-    <form>
+    <div class="content">
       @for (investment of investments.investments; track $index; let index =
       $index) {
-      <div class="row">
-        <mat-form-field>
-          <mat-label>TITLE</mat-label>
-          <input
-            matInput
-            [(ngModel)]="investment.title"
-            [name]="'title' + index"
-            type="text"
-            (ngModelChange)="toggleUpdateNeeded()"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>AMOUNT</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="investment.totalAmount"
-            [name]="'totalAmount' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="1000000000"
-            required
-          />
-          <span matSuffix>€</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>INTEREST RATE</mat-label>
-          <input
-            appDisableScroll
-            matInput
-            [(ngModel)]="investment.interestRate"
-            [name]="'interestRate' + index"
-            type="number"
-            (ngModelChange)="toggleUpdateNeeded()"
-            min="0"
-            max="100"
-            required
-          />
-          <span matSuffix>%</span>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label [ngStyle]="{ color: investment.color }">COLOR</mat-label>
-          <mat-select
-            [ngStyle]="{ color: investment.color }"
-            [(ngModel)]="investment.color"
-            (ngModelChange)="toggleUpdateNeeded()"
-            [name]="'color' + index"
-          >
-            @for (key of colorKeys; track key) {
-            <mat-option [value]="Color[key]">{{ key }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <div class="delete-container">
-          <button
-            type="button"
-            (click)="deleteInvestment(index)"
-            class="delete"
-            title="Delete Investment"
-          >
-            <i class="bx bx-x"></i>
-          </button>
-        </div>
-      </div>
+      <app-investment
+        [investment]="investment"
+        (updateEvent)="updateInvestment(investment, index)"
+        (deleteEvent)="deleteInvestment(index)"
+      ></app-investment>
       }
-    </form>
+    </div>
     <div class="button-container">
       <button
         type="button"
@@ -89,16 +28,6 @@
       >
         <i class="bx bx-plus"></i>
       </button>
-      @if(updateNeeded) {
-      <button
-        type="button"
-        (click)="updateInvestments()"
-        class="update"
-        title="Update Investment"
-      >
-        <i class="bx bx-check"></i>
-      </button>
-      }
     </div>
     <div
       class="graph"

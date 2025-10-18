@@ -1,20 +1,23 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { Investments } from '../core/interfaces/investments';
-import { Chart } from 'chart.js';
-import { Color } from '../core/enums/color.enum';
-import { ToastrService } from 'ngx-toastr';
-import { InvestmentsService } from '../core/services/investments.service';
-import { Subject, take, takeUntil } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Investment } from '../core/interfaces/investment';
 import { RouterModule } from '@angular/router';
-import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
+import { Chart } from 'chart.js';
+import { ToastrService } from 'ngx-toastr';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import { Color } from '../core/enums/color.enum';
+import { Investment } from '../core/interfaces/investment';
+import { Investments } from '../core/interfaces/investments';
+import { InvestmentsService } from '../core/services/investments.service';
+import { InvestmentDialogComponent } from '../shared/components/investment-dialog/investment-dialog.component';
+import { InvestmentComponent } from './investment/investment.component';
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-investments',
@@ -26,7 +29,7 @@ import { DisableScrollDirective } from '../shared/directives/disable-scroll.dire
     MatSelectModule,
     MatProgressSpinnerModule,
     RouterModule,
-    DisableScrollDirective,
+    InvestmentComponent,
   ],
   templateUrl: './investments.component.html',
   styleUrl: './investments.component.css',
@@ -43,7 +46,7 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
   investmentsService = inject(InvestmentsService);
   loading: boolean = true;
   destroyed$ = new Subject<void>();
-  updateNeeded: boolean = false;
+  dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.investments.investments = [];
@@ -304,10 +307,6 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     return results;
   }
 
-  toggleUpdateNeeded(): void {
-    this.updateNeeded = true;
-  }
-
   saveUserInvestments(toastrMessage: string): void {
     this.loading = true;
     if (!this.investments.id) {
@@ -345,7 +344,6 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.updateInvestmentsDoughnutGraph();
             this.updateInvestmentsBarGraph();
-            this.updateNeeded = false;
             this.toastr.info('Investment ' + toastrMessage, 'Investments', {
               positionClass: 'toast-bottom-center',
               toastClass: 'ngx-toastr custom info',
@@ -366,9 +364,42 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteInvestment(index: number): void {
-    this.investments.investments.splice(index, 1);
-    this.saveUserInvestments('deleted');
+  deleteInvestment(invesmentIndex: number): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'delete this investment',
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res: boolean) => res),
+        switchMap(() => {
+          this.loading = true;
+          this.investments.investments.splice(invesmentIndex, 1);
+          return this.investmentsService.updateInvestments(this.investments);
+        }),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.updateInvestmentsDoughnutGraph();
+          this.updateInvestmentsBarGraph();
+          this.toastr.info('Investment deleted', 'Investments', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   addInvestment(): void {
@@ -396,30 +427,42 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     this.saveUserInvestments('added');
   }
 
-  updateInvestments(): void {
-    if (
-      !this.investments.investments.some(
-        (investment) =>
-          investment.totalAmount < 0 ||
-          investment.interestRate < 0 ||
-          investment.interestRate > 100
-      ) &&
-      this.investments.investments.every(
-        (investment) =>
-          investment.title &&
-          investment.totalAmount !== undefined &&
-          investment.totalAmount !== null &&
-          investment.interestRate !== undefined &&
-          investment.interestRate !== null
+  updateInvestment(investment: Investment, index: number): void {
+    const dialogRef = this.dialog.open(InvestmentDialogComponent, {
+      data: structuredClone(investment),
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res) => !!res),
+        switchMap((res: Investment) => {
+          this.loading = true;
+          this.investments.investments[index] = res;
+          return this.investmentsService.updateInvestments(this.investments);
+        }),
+        takeUntil(this.destroyed$)
       )
-    ) {
-      this.saveUserInvestments('updated');
-    } else {
-      this.toastr.error('Invalid investment', 'Investments', {
-        positionClass: 'toast-bottom-center',
-        toastClass: 'ngx-toastr custom error',
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.updateInvestmentsDoughnutGraph();
+          this.updateInvestmentsBarGraph();
+          this.toastr.info('Investment updated', 'Investments', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Investments', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
       });
-    }
   }
 
   getTotal(): number {

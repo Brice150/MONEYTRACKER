@@ -2,18 +2,22 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import Chart from 'chart.js/auto';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, take, takeUntil } from 'rxjs';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { Color } from '../core/enums/color.enum';
 import { Expense } from '../core/interfaces/expense';
 import { Expenses } from '../core/interfaces/expenses';
 import { ExpensesService } from '../core/services/expenses.service';
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ExpenseDialogComponent } from '../shared/components/expense-dialog/expense-dialog.component';
 import { DisableScrollDirective } from '../shared/directives/disable-scroll.directive';
+import { ExpenseComponent } from './expense/expense.component';
 
 @Component({
   selector: 'app-expenses',
@@ -25,6 +29,7 @@ import { DisableScrollDirective } from '../shared/directives/disable-scroll.dire
     MatSelectModule,
     MatProgressSpinnerModule,
     DisableScrollDirective,
+    ExpenseComponent,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css',
@@ -40,8 +45,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   expensesService = inject(ExpensesService);
   loading: boolean = true;
   destroyed$ = new Subject<void>();
-  updateNeeded: boolean = false;
   updateNeededIncome: boolean = false;
+  dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.expenses.expenses = [];
@@ -144,10 +149,6 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleUpdateNeeded(): void {
-    this.updateNeeded = true;
-  }
-
   toggleUpdateNeededIncome(): void {
     this.updateNeededIncome = true;
   }
@@ -187,7 +188,6 @@ export class ExpensesComponent implements OnInit, OnDestroy {
           next: () => {
             this.loading = false;
             this.updateExpensesGraph();
-            this.updateNeeded = false;
             this.updateNeededIncome = false;
             this.toastr.info('Expense ' + toastrMessage, 'Expenses', {
               positionClass: 'toast-bottom-center',
@@ -209,9 +209,41 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteExpense(index: number): void {
-    this.expenses.expenses.splice(index, 1);
-    this.saveUserExpenses('deleted');
+  deleteExpense(expenseIndex: number): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'delete this expense',
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res: boolean) => res),
+        switchMap(() => {
+          this.loading = true;
+          this.expenses.expenses.splice(expenseIndex, 1);
+          return this.expensesService.updateExpenses(this.expenses);
+        }),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.updateExpensesGraph();
+          this.toastr.info('Expense deleted', 'Expenses', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Expenses', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
   }
 
   addExpense(): void {
@@ -238,26 +270,49 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.saveUserExpenses('added');
   }
 
-  updateExpenses(): void {
-    const expensesValid =
-      !this.expenses.expenses.some((expense) => expense.amount < 0) &&
-      this.expenses.expenses.every(
-        (expense) =>
-          expense.amount !== undefined &&
-          expense.amount !== null &&
-          expense.title
-      );
+  updateExpense(investment: Expense, index: number): void {
+    const dialogRef = this.dialog.open(ExpenseDialogComponent, {
+      data: structuredClone(investment),
+    });
 
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res) => !!res),
+        switchMap((res: Expense) => {
+          this.loading = true;
+          this.expenses.expenses[index] = res;
+          return this.expensesService.updateExpenses(this.expenses);
+        }),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.updateExpensesGraph();
+          this.toastr.info('Expense updated', 'Expenses', {
+            positionClass: 'toast-bottom-center',
+            toastClass: 'ngx-toastr custom info',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          if (!error.message.includes('Missing or insufficient permissions.')) {
+            this.toastr.error(error.message, 'Expenses', {
+              positionClass: 'toast-bottom-center',
+              toastClass: 'ngx-toastr custom error',
+            });
+          }
+        },
+      });
+  }
+
+  updateIncome(): void {
     const incomeInvalid = this.expenses.income && this.expenses.income < 0;
 
-    if (expensesValid && !incomeInvalid) {
+    if (!incomeInvalid) {
       this.saveUserExpenses('updated');
-    } else if (!expensesValid) {
-      this.toastr.info('Invalid expense', 'Expenses', {
-        positionClass: 'toast-bottom-center',
-        toastClass: 'ngx-toastr custom error',
-      });
-    } else if (incomeInvalid) {
+    } else {
       this.toastr.info('Invalid income', 'Income', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',

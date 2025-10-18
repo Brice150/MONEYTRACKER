@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="update-container">
+    <button (click)="update()" class="update" title="Update">
+      <i class="bx bxs-edit-alt"></i>
+    </button>
+  </div>
+  <div class="delete-container">
+    <button (click)="delete()" class="delete" title="Delete">
+      <i class="bx bx-x"></i>
+    </button>
+  </div>
+  <div class="container type" [ngStyle]="{ color: expense().color }">
+    <span>{{ expense().title }}</span>
+  </div>
+  <div class="container">
+    <i class="bx bxs-right-arrow-circle"></i>
+    <span class="label">Total :</span>
+    <span class="value" [ngStyle]="{ color: expense().color }"
+      >{{ expense().amount }} €</span
+    >
+  </div>
+</div>
