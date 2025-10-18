@@ -1,3 +1,4 @@
+import { Color } from '../enums/color.enum';
 import { PropertyType } from '../enums/property-type.enum';
 
 export interface Property {
@@ -8,4 +9,5 @@ export interface Property {
   rent: number;
   ownershipRatio: number;
   remainingLoan: number;
+  color: Color;
 }

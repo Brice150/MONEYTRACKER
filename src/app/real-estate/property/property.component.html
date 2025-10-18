@@ -9,7 +9,7 @@
       <i class="bx bx-x"></i>
     </button>
   </div>
-  <div class="container type">
+  <div class="container type" [ngStyle]="{ color: property().color }">
     <i [ngClass]="propertyTypeIcons[property().type]"></i>
     <span>{{ property().type }}</span>
   </div>
@@ -52,7 +52,7 @@
   <div class="container">
     <i class="bx bxs-right-arrow-circle"></i>
     <span class="label">Total :</span>
-    <span class="value total"
+    <span class="value" [ngStyle]="{ color: property().color }"
       >{{
         (
           (property().price - property().remainingLoan) *

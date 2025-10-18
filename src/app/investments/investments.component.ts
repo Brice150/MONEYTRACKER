@@ -109,15 +109,7 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
-              labels: {
-                padding: 40,
-                font: {
-                  size: 16,
-                  weight: 800,
-                },
-                color: 'white',
-              },
+              display: false,
             },
             tooltip: {
               callbacks: {
@@ -431,7 +423,7 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     ) {
       this.saveUserInvestments('updated');
     } else {
-      this.toastr.info('Invalid investment', 'Investments', {
+      this.toastr.error('Invalid investment', 'Investments', {
         positionClass: 'toast-bottom-center',
         toastClass: 'ngx-toastr custom error',
       });

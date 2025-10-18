@@ -89,6 +89,18 @@
         required
       />
     </mat-form-field>
+    <mat-form-field class="color">
+      <mat-label [ngStyle]="{ color: property.color }">COLOR</mat-label>
+      <mat-select
+        [ngStyle]="{ color: property.color }"
+        [(ngModel)]="property.color"
+        name="color"
+      >
+        @for (key of colorKeys; track key) {
+        <mat-option [value]="Color[key]">{{ key }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
     <div class="button-container">
       <button type="button" title="Cancel" (click)="cancel()" class="delete">
         <i class="bx bx-x"></i>

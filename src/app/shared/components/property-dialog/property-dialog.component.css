@@ -87,20 +87,11 @@ section .content mat-form-field {
   width: 100%;
 }
 
-section .content mat-form-field mat-error {
-  margin-top: 2px;
-}
-
-section .content mat-form-field mat-error span {
-  font-size: 16px;
-}
-
 .flex i {
-  font-size: 32px;
+  font-size: 28px;
 }
 
 .type {
-  font-size: 20px;
   font-weight: 500;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -203,11 +194,6 @@ mat-option:hover .flex {
   border-bottom-color: var(--accent) !important;
 }
 
-::ng-deep mat-form-field.mat-form-field-invalid {
-  --primary: red;
-  --accent: red;
-}
-
 ::ng-deep
   .mdc-text-field--filled.mdc-text-field--disabled
   .mdc-text-field__input {
@@ -227,11 +213,11 @@ mat-option:hover .flex {
 }
 
 ::ng-deep .mat-mdc-select {
-  color: var(--accent) !important;
+  color: var(--primary) !important;
 }
 
 ::ng-deep .mat-mdc-select-arrow svg {
-  fill: var(--accent) !important;
+  fill: var(--primary) !important;
 }
 
 ::ng-deep
@@ -294,8 +280,7 @@ mat-option:hover .flex {
   border-radius: var(--light-radius) !important;
 }
 
-::ng-deep .mat-mdc-select-value {
-  font-size: 20px;
-  font-weight: 500;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+::ng-deep mat-form-field.mat-form-field-invalid {
+  --primary: red;
+  --accent: red;
 }

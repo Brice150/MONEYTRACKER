@@ -56,6 +56,9 @@ export class RealEstateHomeComponent implements OnChanges {
                   (property.price - property.remainingLoan) *
                   (property.ownershipRatio / 100)
               ),
+              backgroundColor: this.realEstate().properties.map(
+                (property: Property) => property.color
+              ),
             },
           ],
         },

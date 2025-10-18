@@ -86,12 +86,7 @@
   width: 100%;
 }
 
-.card .container .value.total {
-  color: var(--secondary);
-}
-
 .card .container.type {
-  color: var(--accent);
   font-size: 20px;
   font-weight: 900;
   margin-bottom: 10px;

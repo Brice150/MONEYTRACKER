@@ -14,6 +14,7 @@ import { RealEstateService } from '../core/services/real-estate.service';
 import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { PropertyDialogComponent } from '../shared/components/property-dialog/property-dialog.component';
 import { PropertyComponent } from './property/property.component';
+import { Color } from '../core/enums/color.enum';
 
 @Component({
   selector: 'app-real-estate',
@@ -93,6 +94,9 @@ export class RealEstateComponent implements OnInit, OnDestroy {
                   (property.price - property.remainingLoan) *
                   (property.ownershipRatio / 100)
               ),
+              backgroundColor: this.realEstate.properties.map(
+                (property: Property) => property.color
+              ),
             },
           ],
         },
@@ -100,15 +104,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
-              labels: {
-                padding: 40,
-                font: {
-                  size: 16,
-                  weight: 800,
-                },
-                color: 'white',
-              },
+              display: false,
             },
             tooltip: {
               callbacks: {
@@ -153,11 +149,28 @@ export class RealEstateComponent implements OnInit, OnDestroy {
           (property.price - property.remainingLoan) *
           (property.ownershipRatio / 100)
       );
+      this.doughnutGraph.data.datasets[0].backgroundColor =
+        this.realEstate.properties.map((property: Property) => property.color);
       this.doughnutGraph.update();
     }
   }
 
   addProperty(): void {
+    const usedColors: Color[] = this.realEstate.properties.map(
+      (property) => property.color
+    );
+    const unusedColors: Color[] = Object.values(Color).filter(
+      (color) => !usedColors.includes(color)
+    );
+
+    let newColor: Color = Color.BLUE;
+
+    if (unusedColors.length !== 0) {
+      newColor = unusedColors[0];
+    } else {
+      newColor = usedColors[Math.floor(Math.random() * usedColors.length)];
+    }
+
     this.realEstate.properties.push({
       type: PropertyType.HOUSE,
       city: 'Paris',
@@ -166,6 +179,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
       surface: 40,
       ownershipRatio: 100,
       remainingLoan: 0,
+      color: newColor,
     });
     this.saveUserRealEstates('added');
   }

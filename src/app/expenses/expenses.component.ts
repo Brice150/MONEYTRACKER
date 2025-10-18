@@ -106,15 +106,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
-              labels: {
-                padding: 40,
-                font: {
-                  size: 16,
-                  weight: 800,
-                },
-                color: 'white',
-              },
+              display: false,
             },
             tooltip: {
               callbacks: {
