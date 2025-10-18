@@ -39,11 +39,7 @@ export class RealEstateHomeComponent implements OnChanges {
         data: {
           labels: this.realEstate().properties.map(
             (property: Property) =>
-              `${property.type} - ${
-                property.city.length > 25
-                  ? property.city.substring(0, 22) + '...'
-                  : property.city
-              } (${(
+              `${property.type} - ${property.city} (${(
                 (property.price - property.remainingLoan) *
                 (property.ownershipRatio / 100)
               ).toLocaleString('fr-FR')} €)`

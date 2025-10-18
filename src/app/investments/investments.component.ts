@@ -87,11 +87,9 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
         data: {
           labels: this.investments.investments.map(
             (investment: Investment) =>
-              `${
-                investment.title.length > 15
-                  ? investment.title.substring(0, 12) + '...'
-                  : investment.title
-              } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
+              `${investment.title} (${investment.totalAmount.toLocaleString(
+                'fr-FR'
+              )} €)`
           ),
           datasets: [
             {
@@ -141,11 +139,9 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     const labels = yearlyData.map((data) => `${data.year}`);
     const datasets = this.investments.investments.map((investment, index) => {
       return {
-        label: `${
-          investment.title.length > 15
-            ? investment.title.substring(0, 12) + '...'
-            : investment.title
-        } (${investment.totalAmount.toLocaleString('fr-FR')} €)`,
+        label: `${investment.title} (${investment.totalAmount.toLocaleString(
+          'fr-FR'
+        )} €)`,
         data: yearlyData.map((data) => data.totals[index]),
         backgroundColor: investment.color,
       };
@@ -252,11 +248,9 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
     if (this.doughnutGraph) {
       this.doughnutGraph.data.labels = this.investments.investments.map(
         (investment: Investment) =>
-          `${
-            investment.title.length > 15
-              ? investment.title.substring(0, 12) + '...'
-              : investment.title
-          } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
+          `${investment.title} (${investment.totalAmount.toLocaleString(
+            'fr-FR'
+          )} €)`
       );
       this.doughnutGraph.data.datasets[0].data =
         this.investments.investments.map(
@@ -276,11 +270,9 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
       const labels = yearlyData.map((data) => `${data.year}`);
       const datasets = this.investments.investments.map((investment, index) => {
         return {
-          label: `${
-            investment.title.length > 15
-              ? investment.title.substring(0, 12) + '...'
-              : investment.title
-          } (${investment.totalAmount.toLocaleString('fr-FR')} €)`,
+          label: `${investment.title} (${investment.totalAmount.toLocaleString(
+            'fr-FR'
+          )} €)`,
           data: yearlyData.map((data) => data.totals[index]),
           backgroundColor: investment.color,
         };

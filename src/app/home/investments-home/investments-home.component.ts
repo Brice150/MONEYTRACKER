@@ -39,11 +39,9 @@ export class InvestmentsHomeComponent implements OnChanges {
         data: {
           labels: this.investments().investments.map(
             (investment: Investment) =>
-              `${
-                investment.title.length > 25
-                  ? investment.title.substring(0, 22) + '...'
-                  : investment.title
-              } (${investment.totalAmount.toLocaleString('fr-FR')} €)`
+              `${investment.title} (${investment.totalAmount.toLocaleString(
+                'fr-FR'
+              )} €)`
           ),
           datasets: [
             {

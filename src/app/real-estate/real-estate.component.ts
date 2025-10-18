@@ -77,11 +77,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
         data: {
           labels: this.realEstate.properties.map(
             (property: Property) =>
-              `${property.type} - ${
-                property.city.length > 15
-                  ? property.city.substring(0, 12) + '...'
-                  : property.city
-              } (${(
+              `${property.type} - ${property.city} (${(
                 (property.price - property.remainingLoan) *
                 (property.ownershipRatio / 100)
               ).toLocaleString('fr-FR')} €)`
@@ -135,11 +131,7 @@ export class RealEstateComponent implements OnInit, OnDestroy {
     if (this.doughnutGraph) {
       this.doughnutGraph.data.labels = this.realEstate.properties.map(
         (property: Property) =>
-          `${property.type} - ${
-            property.city.length > 15
-              ? property.city.substring(0, 12) + '...'
-              : property.city
-          } (${(
+          `${property.type} - ${property.city} (${(
             (property.price - property.remainingLoan) *
             (property.ownershipRatio / 100)
           ).toLocaleString('fr-FR')} €)`

@@ -84,11 +84,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
         data: {
           labels: this.expenses.expenses.map(
             (expense: Expense) =>
-              `${
-                expense.title.length > 15
-                  ? expense.title.substring(0, 12) + '...'
-                  : expense.title
-              } (${expense.amount.toLocaleString('fr-FR')} €)`
+              `${expense.title} (${expense.amount.toLocaleString('fr-FR')} €)`
           ),
           datasets: [
             {
@@ -137,11 +133,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     if (this.doughnutGraph) {
       this.doughnutGraph.data.labels = this.expenses.expenses.map(
         (expense: Expense) =>
-          `${
-            expense.title.length > 15
-              ? expense.title.substring(0, 12) + '...'
-              : expense.title
-          } (${expense.amount.toLocaleString('fr-FR')} €)`
+          `${expense.title} (${expense.amount.toLocaleString('fr-FR')} €)`
       );
       this.doughnutGraph.data.datasets[0].data = this.expenses.expenses.map(
         (expense: Expense) => expense.amount
