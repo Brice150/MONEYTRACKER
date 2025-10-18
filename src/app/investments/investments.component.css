@@ -51,6 +51,7 @@ section {
 
 .graph.width {
   width: 95%;
+  height: 500px;
 }
 
 section form {
@@ -339,13 +340,13 @@ mat-option:hover {
 }
 
 @media screen and (max-width: 500px) {
-  .graph.visible {
+  .graph.visible:not(.width) {
     height: 400px;
   }
 }
 
 @media screen and (max-width: 425px) {
-  .graph.visible {
+  .graph.visible:not(.width) {
     height: 350px;
   }
 }
