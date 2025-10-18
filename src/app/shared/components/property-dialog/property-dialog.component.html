@@ -1,7 +1,7 @@
 <section mat-dialog-content>
   <h1>Update Property</h1>
   <form class="content" (ngSubmit)="confirm()">
-    <mat-form-field>
+    <mat-form-field class="first-select">
       <mat-label>TYPE</mat-label>
       <mat-select [(ngModel)]="property.type" name="type">
         @for (type of propertyTypes; track type) {
@@ -89,7 +89,7 @@
         required
       />
     </mat-form-field>
-    <mat-form-field class="color">
+    <mat-form-field>
       <mat-label [ngStyle]="{ color: property.color }">COLOR</mat-label>
       <mat-select
         [ngStyle]="{ color: property.color }"
@@ -97,7 +97,11 @@
         name="color"
       >
         @for (key of colorKeys; track key) {
-        <mat-option [value]="Color[key]">{{ key }}</mat-option>
+        <mat-option [value]="Color[key]">
+          <div class="flex">
+            <span class="type">{{ key }}</span>
+          </div></mat-option
+        >
         }
       </mat-select>
     </mat-form-field>

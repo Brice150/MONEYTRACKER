@@ -310,6 +310,19 @@ mat-spinner {
   border-bottom-color: var(--accent) !important;
 }
 
+::ng-deep .mat-mdc-select-panel {
+  background-color: var(--background-card) !important;
+}
+
+mat-option {
+  color: var(--primary);
+}
+
+mat-option:hover {
+  background-color: var(--accent) !important;
+  color: var(--primary);
+}
+
 ::ng-deep mat-form-field.mat-form-field-invalid {
   --secondary: red;
   --accent: red;

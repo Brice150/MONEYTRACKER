@@ -212,7 +212,7 @@ mat-option:hover .flex {
   background-color: var(--primary) !important;
 }
 
-::ng-deep .mat-mdc-select {
+::ng-deep .first-select .mat-mdc-select {
   color: var(--primary) !important;
 }
 
