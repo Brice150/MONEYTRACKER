@@ -359,4 +359,20 @@ export class InvestmentsSimulatorComponent implements OnInit, OnDestroy {
       this.barGraph.update();
     }
   }
+
+  formatDuration(totalMonths: number): string {
+    if (totalMonths < 12) {
+      return `${totalMonths} ${totalMonths > 1 ? 'Months' : 'Month'}`;
+    }
+
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+
+    let result = `${years} ${years > 1 ? 'Years' : 'Year'}`;
+    if (months > 0) {
+      result += ` ${months} ${months > 1 ? 'Months' : 'Month'}`;
+    }
+
+    return result;
+  }
 }

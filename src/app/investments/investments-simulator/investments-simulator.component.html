@@ -86,14 +86,7 @@
         €</span
       >
       in
-      <span>{{
-        investmentsSimulator.monthsToGoal >= 12
-          ? (investmentsSimulator.monthsToGoal / 12
-              | number : "1.1-1" : "fr-FR") +
-            (investmentsSimulator.monthsToGoal >= 24 ? " years" : " year")
-          : investmentsSimulator.monthsToGoal +
-            (investmentsSimulator.monthsToGoal > 1 ? " months" : " month")
-      }}</span>
+      <span>{{ formatDuration(investmentsSimulator.monthsToGoal) }}</span>
     </span>
   </div>
   } @else if (investmentsSimulator.goalAmount &&

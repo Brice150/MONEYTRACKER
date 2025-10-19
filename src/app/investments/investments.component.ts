@@ -410,7 +410,7 @@ export class InvestmentsComponent implements OnInit, OnDestroy {
       (color) => !usedColors.includes(color)
     );
 
-    let newColor: Color = Color.BLUE;
+    let newColor: Color = Color.BLUE_LIGHT;
 
     if (unusedColors.length !== 0) {
       newColor = unusedColors[0];

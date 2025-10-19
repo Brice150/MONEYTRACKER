@@ -16,7 +16,7 @@
     <i class="bx bxs-right-arrow-circle"></i>
     <span class="label">Total :</span>
     <span class="value" [ngStyle]="{ color: expense().color }"
-      >{{ expense().amount }} €</span
+      >{{ expense().amount.toLocaleString("fr-FR") }} €</span
     >
   </div>
 </div>

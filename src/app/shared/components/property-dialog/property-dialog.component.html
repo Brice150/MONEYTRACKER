@@ -104,7 +104,7 @@
         @for (key of colorKeys; track key) {
         <mat-option [value]="Color[key]">
           <div class="flex">
-            <span class="type">{{ key }}</span>
+            <span class="type">{{ key.replace("_", " ") }}</span>
           </div></mat-option
         >
         }
