@@ -1,0 +1,33 @@
+<section>
+  <div class="column">
+    <div class="content">
+      @for (progressAmount of progress.progressAmounts; track $index; let index
+      = $index) {
+      <app-progress-amount
+        [progressAmount]="progressAmount"
+        (updateEvent)="updateProgress(progressAmount, index)"
+        (deleteEvent)="deleteProgress(index)"
+      ></app-progress-amount>
+      }
+    </div>
+    <div class="button-container">
+      <button
+        type="button"
+        (click)="addProgress()"
+        class="add"
+        title="Add Progress"
+      >
+        <i class="bx bx-plus"></i>
+      </button>
+    </div>
+    <div
+      class="graph width"
+      [ngClass]="{ visible: progress.progressAmounts.length > 0 }"
+    >
+      <canvas id="progressLineGraph"></canvas>
+    </div>
+  </div>
+</section>
+@if(loading) {
+<mat-spinner></mat-spinner>
+}

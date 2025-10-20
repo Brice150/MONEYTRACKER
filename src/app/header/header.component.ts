@@ -39,6 +39,11 @@ export class HeaderComponent {
       title: 'Real Estate Simulator',
       icon: 'bx bx-spreadsheet',
     },
+    {
+      path: '/progress',
+      title: 'Progress',
+      icon: 'bx bx-line-chart',
+    },
   ];
 
   getTitle(): string {

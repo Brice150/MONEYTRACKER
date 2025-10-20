@@ -103,17 +103,4 @@ export class RealEstateHomeComponent implements OnChanges {
     }
     return total;
   }
-
-  getTotalRent(): number {
-    let total: number = 0;
-    const realEstate = this.realEstate();
-    if (!realEstate.properties || realEstate.properties.length === 0) {
-      return 0;
-    }
-
-    for (let property of realEstate.properties) {
-      total += property.rent * (property.ownershipRatio / 100);
-    }
-    return total;
-  }
 }

@@ -16,15 +16,6 @@
         >{{ getTotal() | number : "1.0-0" : "fr-FR" }} €</span
       >
     </div>
-    <div class="element">
-      <div class="subtitle">
-        <i class="bx bxl-airbnb"></i>
-        <span>Rent :</span>
-      </div>
-      <span class="number"
-        >{{ getTotalRent() | number : "1.0-0" : "fr-FR" }} € / Month</span
-      >
-    </div>
   </div>
   } @else {
   <mat-spinner></mat-spinner>

@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="update-container">
+    <button (click)="update()" class="update" title="Update">
+      <i class="bx bxs-edit-alt"></i>
+    </button>
+  </div>
+  <div class="delete-container">
+    <button (click)="delete()" class="delete" title="Delete">
+      <i class="bx bx-x"></i>
+    </button>
+  </div>
+  <div class="container first">
+    <i class="bx bx-time"></i>
+    <span class="label">Date :</span>
+    <span class="value">{{ progressAmount().date | date : "dd/MM/yyyy" }}</span>
+  </div>
+  <div class="container">
+    <i class="bx bxs-right-arrow-circle"></i>
+    <span class="label">Total :</span>
+    <span class="value" style="color: #45d606"
+      >{{ progressAmount().amount.toLocaleString("fr-FR") }} €</span
+    >
+  </div>
+</div>

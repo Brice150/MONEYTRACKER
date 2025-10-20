@@ -26,10 +26,6 @@ section .title {
   color: var(--secondary);
 }
 
-section:hover .title {
-  color: var(--primary);
-}
-
 section .title span {
   text-align: center;
   font-size: 22px;
@@ -75,10 +71,6 @@ section .value-container .number {
   color: var(--secondary);
   margin-right: 5px;
   transition: 0.5s ease;
-}
-
-section:hover .value-container .number {
-  color: var(--primary);
 }
 
 section .value-container i {

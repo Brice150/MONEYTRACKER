@@ -9,6 +9,7 @@ import { InvestmentsSimulatorComponent } from './investments/investments-simulat
 import { RealEstateComponent } from './real-estate/real-estate.component';
 import { RealEstateSimulatorComponent } from './real-estate/real-estate-simulator/real-estate-simulator.component';
 import { HomeComponent } from './home/home.component';
+import { ProgressComponent } from './progress/progress.component';
 
 export const routes: Routes = [
   { path: 'connect', component: ConnectComponent, canActivate: [noUserGuard] },
@@ -33,6 +34,11 @@ export const routes: Routes = [
   {
     path: 'real-estate/simulator',
     component: RealEstateSimulatorComponent,
+    canActivate: [userGuard],
+  },
+  {
+    path: 'progress',
+    component: ProgressComponent,
     canActivate: [userGuard],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

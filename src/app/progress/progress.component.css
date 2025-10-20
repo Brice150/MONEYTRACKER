@@ -1,0 +1,119 @@
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+section {
+  position: relative;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 95%;
+  max-width: 1200px;
+  background-color: var(--background-card);
+  color: var(--accent);
+  box-shadow: var(--box-shadow);
+  border-radius: var(--strong-radius);
+}
+
+.column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.graph {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+}
+
+.graph.visible {
+  width: 90%;
+  height: 450px;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease-in-out;
+}
+
+.graph.width {
+  width: 95%;
+  height: 500px;
+}
+
+section .content {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 95%;
+}
+
+section .button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+section .add {
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.5s ease;
+  box-shadow: var(--box-shadow);
+  color: var(--accent);
+  border-radius: var(--light-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  border: none;
+  background-color: var(--background-card);
+}
+
+section .add i {
+  font-size: 50px;
+}
+
+section .add:hover {
+  color: var(--primary);
+  background-color: var(--accent);
+}
+
+mat-spinner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+::ng-deep .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--accent) !important;
+}
+
+@media screen and (max-width: 500px) {
+  .graph.visible:not(.width) {
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .graph.visible:not(.width) {
+    height: 350px;
+  }
+}

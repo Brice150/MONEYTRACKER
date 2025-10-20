@@ -106,7 +106,7 @@ export class InvestmentsSimulatorComponent implements OnInit, OnDestroy {
 
   displayGraph(): void {
     const graph = document.getElementById(
-      'barGraph'
+      'lineGraph'
     ) as HTMLCanvasElement | null;
     if (graph) {
       this.barGraph = new Chart(graph, {
