@@ -15,6 +15,22 @@
       />
       <span matSuffix>€</span>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>DATE</mat-label>
+      <input
+        matInput
+        [(ngModel)]="progressAmount.date"
+        [matDatepicker]="picker"
+        name="date"
+        required
+      />
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
     <div class="button-container">
       <button type="button" title="Cancel" (click)="cancel()" class="delete">
         <i class="bx bx-x"></i>

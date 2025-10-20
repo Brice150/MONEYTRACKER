@@ -5,13 +5,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ToastrService } from 'ngx-toastr';
 import { Color } from '../../../core/enums/color.enum';
 import {
   PropertyType,
   PropertyTypeIcons,
 } from '../../../core/enums/property-type.enum';
 import { Property } from '../../../core/interfaces/property';
-import { ToastrService } from 'ngx-toastr';
+import { DisableScrollDirective } from '../../directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-property-dialog',
@@ -21,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    DisableScrollDirective,
   ],
   templateUrl: './property-dialog.component.html',
   styleUrl: './property-dialog.component.css',

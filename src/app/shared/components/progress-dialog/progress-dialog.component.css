@@ -87,35 +87,6 @@ section .content mat-form-field {
   width: 100%;
 }
 
-.flex i {
-  font-size: 28px;
-}
-
-.type {
-  font-weight: 500;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--accent);
-}
-
-.mat-mdc-option-active .flex {
-  color: var(--primary);
-}
-
-mat-option:hover {
-  background-color: var(--accent) !important;
-}
-
-mat-option:hover .flex {
-  color: var(--primary);
-}
-
 ::ng-deep
   .mdc-text-field--filled:not(.mdc-text-field--disabled):not(
     .mdc-text-field--invalid
@@ -208,60 +179,9 @@ mat-option:hover .flex {
   display: none;
 }
 
-::ng-deep .mat-mdc-select-panel {
-  background-color: var(--primary) !important;
-}
-
-::ng-deep .first-select .mat-mdc-select {
-  color: var(--primary) !important;
-}
-
-::ng-deep .mat-mdc-select-arrow svg {
-  fill: var(--primary) !important;
-}
-
-::ng-deep
-  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
-    .mat-mdc-option-multiple
-  ) {
-  background-color: var(--accent) !important;
-}
-
-::ng-deep
-  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
-    .mat-mdc-option-multiple
-  )
-  .mdc-list-item__primary-text {
-  color: var(--primary) !important;
-}
-
-::ng-deep
-  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
-    .mat-mdc-option-multiple
-  )
-  .mdc-list-item__primary-text
-  .flex
-  i {
-  color: var(--primary) !important;
-}
-
-::ng-deep
-  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
-    .mat-mdc-option-multiple
-  )
-  .mdc-list-item__primary-text
-  .flex
-  .game {
-  color: var(--primary) !important;
-}
-
 ::ng-deep .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after,
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-indeterminate::after {
   color: var(--primary) !important;
-}
-
-::ng-deep .mat-mdc-select-panel {
-  background-color: var(--background-card) !important;
 }
 
 ::ng-deep
@@ -287,6 +207,41 @@ mat-option:hover .flex {
 
 ::ng-deep section form .meter .mat-mdc-form-field-icon-suffix {
   left: -10px;
+}
+
+::ng-deep .mat-mdc-icon-button {
+  color: var(--primary) !important;
+}
+
+::ng-deep mat-calendar-header .mat-mdc-icon-button {
+  color: var(--accent) !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: var(--accent) !important;
+}
+
+::ng-deep
+  .mat-calendar-body-today:not(.mat-calendar-body-selected):not(
+    .mat-calendar-body-comparison-identical
+  ) {
+  border-color: var(--accent) !important;
+}
+
+::ng-deep .mat-datepicker-content {
+  background-color: var(--primary) !important;
+}
+
+::ng-deep .mat-calendar-body-selected.mat-calendar-body-today {
+  box-shadow: inset 0 0 0 1px var(--accent) !important;
+}
+
+::ng-deep .mdc-button__label {
+  height: unset !important;
+}
+
+::ng-deep .mat-mdc-button:not(:disabled):hover {
+  color: var(--accent) !important;
 }
 
 ::ng-deep mat-form-field.mat-form-field-invalid {

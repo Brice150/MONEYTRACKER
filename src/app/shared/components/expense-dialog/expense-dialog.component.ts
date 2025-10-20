@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
 import { Color } from '../../../core/enums/color.enum';
 import { Expense } from '../../../core/interfaces/expense';
+import { DisableScrollDirective } from '../../directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-expense-dialog',
@@ -17,6 +18,7 @@ import { Expense } from '../../../core/interfaces/expense';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    DisableScrollDirective,
   ],
   templateUrl: './expense-dialog.component.html',
   styleUrl: './expense-dialog.component.css',

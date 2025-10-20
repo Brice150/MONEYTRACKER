@@ -22,7 +22,8 @@ export class RealEstateHomeComponent implements OnChanges {
       changes['loading'] &&
       !changes['loading'].firstChange &&
       changes['loading'].previousValue &&
-      !changes['loading'].currentValue
+      !changes['loading'].currentValue &&
+      this.realEstate().properties?.length > 0
     ) {
       this.displayRealEstateDoughnutGraph();
     }

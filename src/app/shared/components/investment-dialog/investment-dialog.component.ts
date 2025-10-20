@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
 import { Color } from '../../../core/enums/color.enum';
 import { Investment } from '../../../core/interfaces/investment';
+import { DisableScrollDirective } from '../../directives/disable-scroll.directive';
 
 @Component({
   selector: 'app-investment-dialog',
@@ -17,6 +18,7 @@ import { Investment } from '../../../core/interfaces/investment';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    DisableScrollDirective,
   ],
   templateUrl: './investment-dialog.component.html',
   styleUrl: './investment-dialog.component.css',

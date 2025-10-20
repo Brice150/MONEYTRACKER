@@ -22,7 +22,8 @@ export class ExpensesHomeComponent implements OnChanges {
       changes['loading'] &&
       !changes['loading'].firstChange &&
       changes['loading'].previousValue &&
-      !changes['loading'].currentValue
+      !changes['loading'].currentValue &&
+      this.expenses().expenses?.length > 0
     ) {
       this.displayExpensesGraph();
     }

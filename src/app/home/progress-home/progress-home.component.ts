@@ -22,7 +22,8 @@ export class ProgressHomeComponent implements OnChanges {
       changes['loading'] &&
       !changes['loading'].firstChange &&
       changes['loading'].previousValue &&
-      !changes['loading'].currentValue
+      !changes['loading'].currentValue &&
+      this.progress().progressAmounts?.length > 0
     ) {
       this.displayProgressLineGraph();
     }

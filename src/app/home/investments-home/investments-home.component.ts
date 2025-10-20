@@ -22,7 +22,8 @@ export class InvestmentsHomeComponent implements OnChanges {
       changes['loading'] &&
       !changes['loading'].firstChange &&
       changes['loading'].previousValue &&
-      !changes['loading'].currentValue
+      !changes['loading'].currentValue &&
+      this.investments().investments?.length > 0
     ) {
       this.displayInvestmentsDoughnutGraph();
     }
