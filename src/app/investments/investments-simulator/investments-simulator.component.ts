@@ -158,7 +158,7 @@ export class InvestmentsSimulatorComponent implements OnInit, OnDestroy {
                     100
                   ).toFixed(0);
 
-                  return `${currentValue} (${percentage}%)`;
+                  return `${currentValue} € (${percentage}%)`;
                 },
               },
             },
