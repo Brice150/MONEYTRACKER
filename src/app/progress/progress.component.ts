@@ -179,7 +179,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
     if (this.lineGraph) {
       this.lineGraph.data.labels = this.progress.progressAmounts.map(
         (progressAmount) =>
-          this.datePipe.transform(progressAmount.date, 'dd/MM/yyyy')!
+          this.datePipe.transform(progressAmount.date, 'MM/yyyy')!
       );
       this.lineGraph.data.datasets[0].data = this.progress.progressAmounts.map(
         (progressAmount) => progressAmount.amount
