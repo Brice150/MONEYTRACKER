@@ -38,7 +38,8 @@ export class ProgressHomeComponent implements OnChanges {
         type: 'line',
         data: {
           labels: this.progress().progressAmounts.map(
-            (measure) => this.datePipe.transform(measure.date, 'dd/MM/yyyy')!
+            (progressAmount) =>
+              this.datePipe.transform(progressAmount.date, 'MM/yyyy')!
           ),
           datasets: [
             {
@@ -67,7 +68,7 @@ export class ProgressHomeComponent implements OnChanges {
                   size: 18,
                   weight: 800,
                 },
-                color: '#006aff',
+                color: '#ffffffff',
               },
               ticks: {
                 color: 'white',
@@ -87,7 +88,7 @@ export class ProgressHomeComponent implements OnChanges {
                   size: 18,
                   weight: 800,
                 },
-                color: '#006aff',
+                color: '#ffffffff',
               },
               ticks: {
                 color: 'white',

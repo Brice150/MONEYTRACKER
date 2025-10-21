@@ -96,7 +96,8 @@ export class ProgressComponent implements OnInit, OnDestroy {
         type: 'line',
         data: {
           labels: this.progress.progressAmounts.map(
-            (measure) => this.datePipe.transform(measure.date, 'dd/MM/yyyy')!
+            (progressAmount) =>
+              this.datePipe.transform(progressAmount.date, 'MM/yyyy')!
           ),
           datasets: [
             {
